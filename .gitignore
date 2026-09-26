@@ -1,0 +1,18 @@
+# BMad Method tool source (external, has its own git history)
+BMAD-METHOD/
+
+# BMad ephemeral render cache
+_bmad/render/
+
+# Python / Django
+__pycache__/
+*.py[cod]
+*.sqlite3
+.env
+.venv/
+venv/
+env/
+staticfiles/
+media/
+*.egg-info/
+.pytest_cache/

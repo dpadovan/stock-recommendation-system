@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Direção 3 — Termômetro Editorial</title>
+<style>
+/*
+  DIREÇÃO 3 — "TERMÔMETRO EDITORIAL"
+  Registro de credibilidade: manchete serifada em peso alto, grade
+  estruturada como página de jornal econômico (pense Valor Econômico, mas
+  aquecido), e um termômetro vertical literal como peça central — o
+  indicador de status vira uma pequena infografia, não um texto discreto.
+  Densidade média-alta (mais conteúdo visível por tela, menos rolagem
+  implícita), contraste tipográfico forte (títulos pesados x corpo leve).
+  O calor entra por um marrom-avermelhado profundo em vez de azul-corporativo.
+
+  PALETA (hex documentados):
+  --paper       #F7F1E6   fundo do app, papel jornal aquecido
+  --card        #FFFFFF   fundo dos módulos
+  --rule        #DCD0BC   hairlines / regras editoriais
+  --ink         #26221D   texto principal, quase-preto quente
+  --ink-muted   #766C5C   texto secundário
+  --brand       #B5502E   terracota profundo — manchetes, acento de marca
+  --brand-soft  #F3E0D5   fundo suave do acento
+  --teal        #3F6E58   verde-petróleo — status "favorável"
+  --teal-soft   #E4EEE8   fundo suave do verde
+  --amber       #C08A2E   status "atenção"
+  --red         #9C3B2E   status "alerta" / concentração
+  --overlay     rgba(38,34,29,.62)  véu do modal
+*/
+:root{
+  --paper:#F7F1E6; --card:#FFFFFF; --rule:#DCD0BC; --ink:#26221D; --ink-muted:#766C5C;
+  --brand:#B5502E; --brand-soft:#F3E0D5; --teal:#3F6E58; --teal-soft:#E4EEE8;
+  --amber:#C08A2E; --red:#9C3B2E; --overlay:rgba(38,34,29,.62);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; padding:40px 20px; background:#ECE2CE;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:var(--ink); display:flex; flex-direction:column; align-items:center; gap:26px;
+}
+.label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#8C7F62;font-weight:700;}
+.rationale{max-width:780px;font-size:13.5px;line-height:1.6;color:#5c5237;text-align:center;margin:0;}
+
+.browser{ width:100%; max-width:1000px; background:var(--card); border-radius:8px; box-shadow:0 24px 60px -18px rgba(38,34,29,.4); overflow:hidden; border:1px solid var(--rule); }
+.chrome{ display:flex; align-items:center; gap:16px; padding:10px 16px; background:#EFE6D4; border-bottom:1px solid var(--rule); }
+.dots{display:flex;gap:6px;} .dots span{width:10px;height:10px;border-radius:50%;}
+.dots .r{background:#D79484;} .dots .y{background:#DDBB7A;} .dots .g{background:#8FAF97;}
+.addr{ flex:1; background:var(--card); border:1px solid var(--rule); border-radius:5px; font-size:11.5px; color:var(--ink-muted); padding:5px 10px; font-family:ui-monospace,Menlo,monospace; }
+
+.screen{ background:var(--paper); }
+.masthead{ display:flex; justify-content:space-between; align-items:center; padding:20px 40px; border-bottom:3px solid var(--ink); }
+.wordmark{ font-family:Georgia,'Times New Roman',serif; font-weight:800; font-size:24px; letter-spacing:-.01em; }
+.wordmark em{ font-style:normal; color:var(--brand); }
+.greet{ font-size:12.5px; color:var(--ink-muted); letter-spacing:.03em; }
+
+.content{ padding:26px 40px 40px; }
+
+.headline-sec{ padding-bottom:24px; margin-bottom:24px; border-bottom:1px solid var(--rule); }
+.kicker{ font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--brand); font-weight:800; margin:0 0 8px; }
+.headline{ font-family:Georgia,'Times New Roman',serif; font-weight:800; font-size:26px; line-height:1.25; margin:0 0 14px; max-width:640px; }
+.headline b{ color:var(--brand); }
+.stat-row{ display:flex; gap:32px; margin:16px 0 14px; }
+.stat{ }
+.stat .n{ font-family:Georgia,serif; font-size:22px; font-weight:800; }
+.stat .n.diff{ color:var(--brand); }
+.stat .l{ font-size:11.5px; color:var(--ink-muted); margin-top:2px; }
+.disclaimer-editorial{ font-size:12.5px; line-height:1.7; color:var(--ink-muted); max-width:680px; border-left:3px solid var(--brand-soft); padding-left:14px; }
+
+/* two column: recommendation text + thermometer */
+.reco-grid{ display:grid; grid-template-columns:1fr 200px; gap:34px; padding-bottom:24px; margin-bottom:24px; border-bottom:1px solid var(--rule); }
+.kicker2{ font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--ink-muted); font-weight:800; margin:0 0 8px; }
+.ticker-line{ font-family:Georgia,serif; font-size:22px; font-weight:800; margin-bottom:4px; }
+.ticker-line span{ font-family:-apple-system,sans-serif; font-size:12.5px; font-weight:600; color:var(--ink-muted); margin-left:8px; }
+.reco-why{ font-size:14.5px; line-height:1.75; margin:12px 0; }
+.non-imperative{ font-size:12.5px; line-height:1.65; color:var(--ink-muted); font-style:italic; border-top:1px dotted var(--rule); padding-top:10px; margin-top:10px;}
+.confirm-line{ margin-top:12px; font-size:12.5px; color:var(--teal); font-weight:700; }
+
+/* literal thermometer */
+.therm-wrap{ display:flex; flex-direction:column; align-items:center; padding-top:6px; }
+.therm-label{ font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-muted); font-weight:700; margin-bottom:10px; }
+.therm{ position:relative; width:34px; height:150px; background:#EDE4D2; border:2px solid var(--ink); border-radius:17px; overflow:hidden; }
+.therm .fill{ position:absolute; bottom:0; left:0; right:0; height:78%; background:linear-gradient(to top,var(--teal),#5f9678); border-radius:0 0 15px 15px; }
+.therm .tick{ position:absolute; left:-9px; width:8px; height:1px; background:var(--ink-muted); }
+.therm-bulb{ width:46px; height:46px; border-radius:50%; background:var(--teal); border:2px solid var(--ink); margin-top:-4px; }
+.therm-status{ margin-top:12px; font-family:Georgia,serif; font-weight:800; font-size:15px; color:var(--teal); }
+
+/* trilha */
+details{ margin-top:0; }
+summary{ cursor:pointer; font-size:13px; font-weight:800; color:var(--brand); list-style:none; display:flex; align-items:center; gap:8px; text-transform:uppercase; letter-spacing:.04em; }
+summary::-webkit-details-marker{ display:none; }
+summary:before{ content:'§'; font-family:Georgia,serif; }
+.trilha-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0; margin-top:18px; border-top:1px solid var(--rule); }
+.trilha-col{ padding:16px 20px; }
+.trilha-col:first-child{ border-right:1px solid var(--rule); }
+.trilha-col h4{ font-family:Georgia,serif; font-size:13px; margin:0 0 12px; }
+.trilha-item{ display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dotted var(--rule); font-size:13px; }
+.trilha-item .val{ font-weight:800; }
+.trilha-src{ display:block; font-size:10.5px; color:var(--ink-muted); margin-top:8px; }
+.proj{ padding:14px 20px 4px; font-size:12.5px; color:var(--ink-muted); line-height:1.7; }
+.proj b{ color:var(--ink); }
+
+/* secondary state */
+.state2-wrap{ width:100%; max-width:1000px; text-align:center; }
+.modal-frame{ position:relative; width:100%; height:560px; border-radius:8px; overflow:hidden; border:1px solid var(--rule); box-shadow:0 24px 60px -18px rgba(38,34,29,.4); }
+.modal-bg{ filter:blur(2.5px) brightness(.94); height:100%; }
+.modal-overlay{ position:absolute; inset:0; background:var(--overlay); display:flex; align-items:center; justify-content:center; padding:20px; }
+.modal-card{ background:var(--paper); border-radius:6px; max-width:460px; width:100%; padding:30px 32px 26px; box-shadow:0 20px 50px rgba(0,0,0,.35); border-top:4px solid var(--brand); }
+.modal-card h3{ font-family:Georgia,serif; font-weight:800; font-size:20px; margin:0 0 8px; }
+.modal-card p{ font-size:13px; line-height:1.65; color:#4a4334; margin:0 0 16px; }
+.slider-row{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+.slider-track{ flex:1; height:6px; background:var(--rule); border-radius:3px; position:relative; }
+.slider-fill{ position:absolute; left:0; top:0; height:100%; width:35%; background:var(--red); border-radius:3px; }
+.slider-thumb{ position:absolute; left:35%; top:50%; transform:translate(-50%,-50%); width:18px; height:18px; border-radius:50%; background:var(--card); border:2px solid var(--red); }
+.slider-val{ font-family:Georgia,serif; font-size:16px; font-weight:800; min-width:44px; text-align:right; }
+.warn-box{ background:#F2DCD3; border-left:3px solid var(--red); padding:12px 14px; font-size:12.5px; line-height:1.6; color:var(--red); margin-bottom:18px; }
+.modal-actions{ display:flex; gap:10px; }
+.btn{ flex:1; border:none; border-radius:4px; padding:11px 14px; font-size:13px; font-weight:700; cursor:default; }
+.btn-primary{ background:var(--ink); color:#fff; }
+.btn-ghost{ background:transparent; border:1px solid var(--rule); color:var(--ink-muted); }
+</style>
+</head>
+<body>
+
+<div class="label">Direção 3 de 4 — Termômetro Editorial</div>
+<p class="rationale">Registro de credibilidade jornalística: manchete serifada de peso alto, grade estruturada como uma página de jornal econômico e um termômetro vertical literal como peça central do status. Densidade média-alta, contraste tipográfico forte (títulos pesados x corpo leve), calor entregue por um marrom-avermelhado profundo no lugar do azul corporativo de sempre.</p>
+
+<div class="browser">
+  <div class="chrome"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><div class="addr">app.painelunico.com.br/painel</div></div>
+  <div class="screen">
+    <div class="masthead">
+      <div class="wordmark">Painel <em>Único</em></div>
+      <div class="greet">MARTA · PERFIL CONSERVADOR · LONGO PRAZO</div>
+    </div>
+    <div class="content">
+
+      <!-- 1 -->
+      <div class="headline-sec">
+        <p class="kicker">Quanto você deixou de ganhar</p>
+        <h1 class="headline">Seus R$ 18.000,00 na poupança renderam <b>R$ 990,00 a menos</b> do que renderiam no CDI em 12 meses</h1>
+        <div class="stat-row">
+          <div class="stat"><div class="n">R$ 1.080,00</div><div class="l">rendeu na poupança</div></div>
+          <div class="stat"><div class="n diff">R$ 2.070,00</div><div class="l">renderia no CDI</div></div>
+        </div>
+        <p class="disclaimer-editorial">Comparação construída a partir do histórico de poupança e CDI dos últimos 12 meses, apenas para ilustrar o custo de deixar o dinheiro parado — rentabilidade passada não constitui garantia de rentabilidade futura.</p>
+      </div>
+
+      <!-- 2 + 5 -->
+      <div class="reco-grid">
+        <div>
+          <p class="kicker2">Uma ação para o seu perfil</p>
+          <div class="ticker-line">TAEE11 <span>TAESA · Transmissão de Energia</span></div>
+          <p class="reco-why">Os dados indicam TAEE11 como compatível com o perfil conservador e horizonte de longo prazo de Marta: contratos regulados de longo prazo, histórico constante de dividendos e oscilação de preço bem abaixo da média da bolsa nos últimos 5 anos.</p>
+          <p class="non-imperative">Isso não é uma recomendação de compra — os dados indicam uma tendência favorável para o seu perfil. Mesmo compatível, uma ação avulsa concentra o risco em uma única empresa; nenhum perfil elimina esse risco por completo.</p>
+          <p class="confirm-line">✓ Percentual confirmado: 12% do total em renda variável</p>
+        </div>
+        <div class="therm-wrap">
+          <span class="therm-label">Status</span>
+          <div class="therm-bulb" style="order:2;"></div>
+          <div class="therm" style="order:1;"><div class="fill"></div></div>
+          <div class="therm-status" style="order:3;">Favorável</div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <details>
+        <summary>Trilha de transparência — a fundamentação completa</summary>
+        <div class="trilha-grid">
+          <div class="trilha-col">
+            <h4>Indicadores fundamentalistas</h4>
+            <div class="trilha-item"><span>Dividend yield médio (5 anos)</span><span class="val">9,1% a.a.</span></div>
+            <div class="trilha-item"><span>Dívida líquida / EBITDA</span><span class="val">2,3x</span></div>
+            <div class="trilha-item"><span>ROE médio (5 anos)</span><span class="val">18,0%</span></div>
+            <span class="trilha-src">Fonte: dados públicos B3 · ref. ago/2026</span>
+          </div>
+          <div class="trilha-col">
+            <h4>Padrões técnicos</h4>
+            <div class="trilha-item"><span>Volatilidade histórica (12m)</span><span class="val">15%</span></div>
+            <div class="trilha-item"><span>Ibovespa no período</span><span class="val">24%</span></div>
+            <div class="trilha-item"><span>Tendência de preço (12m)</span><span class="val">estável</span></div>
+            <span class="trilha-src">sem rompimento relevante de suporte</span>
+          </div>
+        </div>
+        <p class="proj">Projeção de retorno médio, já líquida de IR estimado (alíquota de swing trade, 15%): <b>curto prazo ~7,6% a.a. · médio prazo ~9,3% a.a. · longo prazo ~10,2% a.a.</b> Estimativa, não garantia.</p>
+      </details>
+
+    </div>
+  </div>
+</div>
+
+<div class="state2-wrap">
+  <p class="label" style="margin-bottom:10px;">Estado secundário — aviso de concentração (antes de liberar os detalhes)</p>
+  <div class="modal-frame">
+    <div class="browser modal-bg" style="border:none;box-shadow:none;height:100%;border-radius:8px;">
+      <div class="chrome"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><div class="addr">app.painelunico.com.br/painel</div></div>
+      <div class="screen" style="height:100%;">
+        <div class="masthead"><div class="wordmark">Painel <em>Único</em></div><div class="greet">MARTA · PERFIL CONSERVADOR</div></div>
+        <div class="content"><p class="kicker2">Uma ação para o seu perfil</p><div class="ticker-line">TAEE11 <span>TAESA</span></div></div>
+      </div>
+    </div>
+    <div class="modal-overlay">
+      <div class="modal-card">
+        <h3>Antes de ver os detalhes completos</h3>
+        <p>Quanto do total que você pretende investir em ações você pensa em colocar em TAEE11?</p>
+        <div class="slider-row">
+          <div class="slider-track"><div class="slider-fill"></div><div class="slider-thumb"></div></div>
+          <div class="slider-val">35%</div>
+        </div>
+        <div class="warn-box">Atenção: 35% do seu total em uma única ação é concentração de risco. Uma ação avulsa não é, por definição, um investimento conservador — mesmo compatível com o seu perfil, ela concentra o risco em uma única empresa.</div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost">Ajustar percentual</button>
+          <button class="btn btn-primary">Confirmar e ver detalhes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

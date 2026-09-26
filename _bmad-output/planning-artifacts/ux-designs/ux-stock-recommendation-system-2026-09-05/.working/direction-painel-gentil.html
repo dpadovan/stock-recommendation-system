@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Direção 4 — Painel Gentil</title>
+<style>
+/*
+  DIREÇÃO 4 — "PAINEL GENTIL"
+  A mais próxima de um app fintech de consumo moderno: sidebar fina,
+  cartões arredondados grandes, chips em pílula, formas orgânicas em
+  gradiente radial como textura de fundo (decoração pura CSS, sem imagens).
+  Densidade a mais alta das quatro direções (mais módulos visíveis por
+  tela), peso tipográfico arredondado e amigável, calor entregue via coral
+  + amarelo-mel sobre creme. É o registro mais "acolhedor", testando até
+  onde a marca pode ser fofa sem perder o tom de credibilidade financeira.
+
+  PALETA (hex documentados):
+  --bg          #FDF4EC   fundo do app, creme quente
+  --sidebar     #FFFFFF   fundo da barra lateral
+  --card        #FFFFFF   fundo dos cartões
+  --border      #F3E2D2   bordas suaves
+  --ink         #33291F   texto principal
+  --ink-muted   #93816D   texto secundário
+  --coral       #F2694A   acento primário de marca
+  --coral-soft  #FDE4DB   fundo suave do coral
+  --honey       #F0AC3E   amarelo-mel — status "atenção" / destaque secundário
+  --sage        #6FA287   verde suave — status "favorável"
+  --sage-soft   #E7F1EB   fundo suave do verde
+  --red         #E0604D   status "alerta" / concentração
+  --overlay     rgba(51,41,31,.58)  véu do modal
+*/
+:root{
+  --bg:#FDF4EC; --sidebar:#FFFFFF; --card:#FFFFFF; --border:#F3E2D2; --ink:#33291F;
+  --ink-muted:#93816D; --coral:#F2694A; --coral-soft:#FDE4DB; --honey:#F0AC3E;
+  --sage:#6FA287; --sage-soft:#E7F1EB; --red:#E0604D; --overlay:rgba(51,41,31,.58);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; padding:40px 20px; background:#F3E4D6;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:var(--ink); display:flex; flex-direction:column; align-items:center; gap:26px;
+}
+.label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#9C8367;font-weight:700;}
+.rationale{max-width:780px;font-size:13.5px;line-height:1.6;color:#6b563f;text-align:center;margin:0;}
+
+.browser{ width:100%; max-width:1040px; background:var(--card); border-radius:20px; box-shadow:0 26px 64px -18px rgba(51,41,31,.4); overflow:hidden; border:1px solid var(--border); }
+.chrome{ display:flex; align-items:center; gap:16px; padding:12px 18px; background:#FBEFE2; border-bottom:1px solid var(--border); }
+.dots{display:flex;gap:6px;} .dots span{width:11px;height:11px;border-radius:50%;}
+.dots .r{background:#F3AC9A;} .dots .y{background:#F6D08F;} .dots .g{background:#A6D0B4;}
+.addr{ flex:1; background:var(--card); border:1px solid var(--border); border-radius:8px; font-size:11.5px; color:var(--ink-muted); padding:6px 12px; font-family:ui-monospace,Menlo,monospace; }
+
+.screen{
+  background:
+    radial-gradient(circle at 92% 8%, rgba(242,105,74,.10), transparent 40%),
+    radial-gradient(circle at 6% 90%, rgba(240,172,62,.12), transparent 40%),
+    var(--bg);
+  display:flex; min-height:640px;
+}
+
+.sidebar{ width:76px; background:var(--sidebar); border-right:1px solid var(--border); display:flex; flex-direction:column; align-items:center; padding:22px 0; gap:22px; }
+.side-logo{ width:36px; height:36px; border-radius:11px; background:var(--coral); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:15px; }
+.side-icon{ width:38px; height:38px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:16px; color:var(--ink-muted); }
+.side-icon.active{ background:var(--coral-soft); color:var(--coral); }
+
+.main{ flex:1; padding:26px 34px 34px; }
+.appbar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+.hi{ font-size:20px; font-weight:800; }
+.hi span{ color:var(--coral); }
+.avatar-chip{ display:flex; align-items:center; gap:8px; background:var(--coral-soft); border-radius:20px; padding:6px 14px 6px 6px; font-size:12.5px; font-weight:700; color:#a04327; }
+.avatar-dot{ width:24px; height:24px; border-radius:50%; background:var(--coral); color:#fff; font-size:11px; display:flex; align-items:center; justify-content:center; font-weight:800; }
+
+.grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:16px; }
+.card{ background:var(--card); border:1px solid var(--border); border-radius:16px; padding:20px 22px; }
+.card-title{ font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-muted); font-weight:800; margin:0 0 12px; }
+
+/* 1 */
+.loss-card{ grid-column:1/3; }
+.loss-row{ display:flex; gap:24px; flex-wrap:wrap; margin-bottom:14px; }
+.loss-item{ background:var(--bg); border-radius:12px; padding:12px 16px; flex:1; min-width:200px; }
+.loss-item .n{ font-size:19px; font-weight:800; }
+.loss-item .n.diff{ color:var(--coral); }
+.loss-item .l{ font-size:11.5px; color:var(--ink-muted); margin-top:3px; }
+.disclaimer-chip{ font-size:12px; line-height:1.6; color:#8a6a4c; background:#FBF0DE; border-radius:10px; padding:10px 14px; }
+
+/* 2 */
+.reco-card{ grid-column:1/2; }
+.reco-head{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+.ticker{ font-size:20px; font-weight:800; }
+.ticker span{ display:block; font-size:11.5px; font-weight:600; color:var(--ink-muted); margin-top:2px; }
+.pill-status{ display:inline-flex; align-items:center; gap:6px; background:var(--sage-soft); color:#3f6650; font-weight:800; font-size:11.5px; padding:6px 12px; border-radius:20px; text-transform:uppercase; letter-spacing:.03em; }
+.pill-status .dot{ width:7px; height:7px; border-radius:50%; background:var(--sage); }
+.reco-why{ font-size:13px; line-height:1.65; margin:0 0 10px; }
+.non-imperative{ font-size:11.5px; line-height:1.6; color:var(--ink-muted); background:var(--bg); border-radius:10px; padding:10px 12px; }
+.confirm-pill{ display:inline-flex; align-items:center; gap:6px; margin-top:12px; background:var(--sage-soft); border-radius:20px; padding:6px 12px; font-size:11.5px; font-weight:700; color:#3f6650; }
+
+/* gauge segmented — dashboard style */
+.gauge-card{ grid-column:2/3; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.arc-wrap{ position:relative; width:150px; height:84px; margin-bottom:10px; }
+.arc-track{ width:150px; height:75px; border-radius:150px 150px 0 0; background:conic-gradient(from 180deg, var(--red) 0deg, var(--honey) 60deg, var(--sage) 120deg, var(--sage) 180deg); clip-path:polygon(0 100%, 0 0, 100% 0, 100% 100%); -webkit-mask:radial-gradient(circle at 50% 100%, transparent 46px, #000 47px); mask:radial-gradient(circle at 50% 100%, transparent 46px, #000 47px); }
+.needle{ position:absolute; bottom:0; left:50%; width:3px; height:58px; background:var(--ink); transform-origin:bottom center; transform:translateX(-50%) rotate(58deg); border-radius:2px; }
+.needle:after{ content:''; position:absolute; bottom:-6px; left:50%; transform:translateX(-50%); width:12px; height:12px; border-radius:50%; background:var(--ink); }
+.gauge-label{ font-size:17px; font-weight:800; color:var(--sage); }
+.gauge-sub{ font-size:11px; color:var(--ink-muted); margin-top:2px; }
+
+/* trilha */
+.trilha-card{ grid-column:1/3; }
+details{ margin:0; }
+summary{ cursor:pointer; font-size:13px; font-weight:800; color:var(--coral); list-style:none; display:flex; align-items:center; gap:8px; }
+summary::-webkit-details-marker{ display:none; }
+.chev{ display:inline-block; transition:none; }
+summary:before{ content:'⌄'; font-size:16px; line-height:.6; }
+.trilha-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px; }
+.trilha-box{ background:var(--bg); border-radius:12px; padding:14px 16px; }
+.trilha-box h4{ margin:0 0 10px; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-muted); }
+.ti{ display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed var(--border); font-size:12.5px; }
+.ti:last-child{ border-bottom:none; }
+.ti .val{ font-weight:800; }
+.trilha-src{ display:block; font-size:10.5px; color:var(--ink-muted); margin-top:8px; }
+.proj{ margin-top:12px; font-size:12px; color:var(--ink-muted); line-height:1.6; }
+
+/* secondary state */
+.state2-wrap{ width:100%; max-width:1040px; text-align:center; }
+.modal-frame{ position:relative; width:100%; height:600px; border-radius:20px; overflow:hidden; border:1px solid var(--border); box-shadow:0 26px 64px -18px rgba(51,41,31,.4); }
+.modal-bg{ filter:blur(3px) brightness(.94); height:100%; }
+.modal-overlay{ position:absolute; inset:0; background:var(--overlay); display:flex; align-items:center; justify-content:center; padding:20px; }
+.modal-card{ background:var(--bg); border-radius:22px; max-width:440px; width:100%; padding:28px 28px 24px; box-shadow:0 20px 50px rgba(0,0,0,.35); }
+.modal-card h3{ font-size:19px; font-weight:800; margin:0 0 8px; }
+.modal-card p{ font-size:13px; line-height:1.6; color:#5b4a38; margin:0 0 16px; }
+.slider-row{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+.slider-track{ flex:1; height:10px; background:var(--border); border-radius:5px; position:relative; }
+.slider-fill{ position:absolute; left:0; top:0; height:100%; width:35%; background:var(--red); border-radius:5px; }
+.slider-thumb{ position:absolute; left:35%; top:50%; transform:translate(-50%,-50%); width:22px; height:22px; border-radius:50%; background:#fff; border:3px solid var(--red); box-shadow:0 2px 6px rgba(0,0,0,.2); }
+.slider-val{ font-size:16px; font-weight:800; min-width:44px; text-align:right; }
+.warn-box{ background:#FBE1D9; border-radius:14px; padding:13px 15px; font-size:12.5px; line-height:1.6; color:var(--red); margin-bottom:18px; font-weight:600; }
+.modal-actions{ display:flex; gap:10px; }
+.btn{ flex:1; border:none; border-radius:14px; padding:12px 14px; font-size:13.5px; font-weight:800; cursor:default; }
+.btn-primary{ background:var(--coral); color:#fff; }
+.btn-ghost{ background:#fff; border:1px solid var(--border); color:var(--ink-muted); }
+</style>
+</head>
+<body>
+
+<div class="label">Direção 4 de 4 — Painel Gentil</div>
+<p class="rationale">O registro mais próximo de um app fintech de consumo: barra lateral fina, cartões grandes em pílula, gauge segmentado no lugar de números crus. É a direção de maior densidade (mais módulos por tela) e o tom mais acolhedor das quatro — testa o limite de quanto a marca pode ser fofa sem deixar de parecer confiável com dinheiro.</p>
+
+<div class="browser">
+  <div class="chrome"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><div class="addr">app.painelunico.com.br/painel</div></div>
+  <div class="screen">
+    <div class="sidebar">
+      <div class="side-logo">P</div>
+      <div class="side-icon active">◆</div>
+      <div class="side-icon">◷</div>
+      <div class="side-icon">✎</div>
+      <div class="side-icon">⚙</div>
+    </div>
+    <div class="main">
+      <div class="appbar">
+        <div class="hi">Olá, <span>Marta</span></div>
+        <div class="avatar-chip"><span class="avatar-dot">M</span> Perfil conservador</div>
+      </div>
+
+      <div class="grid">
+
+        <!-- 1 -->
+        <div class="card loss-card">
+          <p class="card-title">Quanto seu dinheiro deixou de render</p>
+          <div class="loss-row">
+            <div class="loss-item"><div class="n">R$ 1.080,00</div><div class="l">rendeu na poupança em 12 meses (sobre R$ 18.000,00)</div></div>
+            <div class="loss-item"><div class="n diff">R$ 2.070,00</div><div class="l">renderia no CDI, no mesmo período</div></div>
+          </div>
+          <div class="disclaimer-chip">Diferença de R$ 990,00 parada junto com o dinheiro — comparação baseada no histórico de 12 meses de poupança e CDI, só para ilustrar o custo da inércia. Rentabilidade passada não garante rentabilidade futura.</div>
+        </div>
+
+        <!-- 2 -->
+        <div class="card reco-card">
+          <p class="card-title">Uma ação para o seu perfil</p>
+          <div class="reco-head">
+            <div class="ticker">TAEE11<span>TAESA · Transmissão de Energia</span></div>
+          </div>
+          <span class="pill-status"><span class="dot"></span>Favorável</span>
+          <p class="reco-why" style="margin-top:10px;">Os dados indicam TAEE11 como compatível com seu perfil conservador e horizonte de longo prazo: contratos regulados de longo prazo, dividendos constantes e oscilação de preço bem abaixo da média da bolsa nos últimos 5 anos.</p>
+          <div class="non-imperative">Isso não é uma recomendação de compra. Os dados indicam uma tendência favorável — quando e quanto investir é sempre sua decisão. Ação avulsa concentra risco em uma única empresa, mesmo dentro do perfil conservador.</div>
+          <div class="confirm-pill">✓ 12% do total confirmado</div>
+        </div>
+
+        <!-- 5: gauge -->
+        <div class="card gauge-card">
+          <p class="card-title" style="align-self:flex-start;">Status</p>
+          <div class="arc-wrap">
+            <div class="arc-track"></div>
+            <div class="needle"></div>
+          </div>
+          <div class="gauge-label">Favorável</div>
+          <div class="gauge-sub">números completos ao expandir abaixo</div>
+        </div>
+
+        <!-- 4 -->
+        <div class="card trilha-card">
+          <details>
+            <summary>Ver a trilha de transparência completa</summary>
+            <div class="trilha-grid">
+              <div class="trilha-box">
+                <h4>Indicadores fundamentalistas</h4>
+                <div class="ti"><span>Dividend yield médio (5a)</span><span class="val">9,1% a.a.</span></div>
+                <div class="ti"><span>Dívida líquida / EBITDA</span><span class="val">2,3x</span></div>
+                <div class="ti"><span>ROE médio (5a)</span><span class="val">18,0%</span></div>
+                <span class="trilha-src">Fonte: dados públicos B3 · ref. ago/2026</span>
+              </div>
+              <div class="trilha-box">
+                <h4>Padrões técnicos</h4>
+                <div class="ti"><span>Volatilidade (12m)</span><span class="val">15%</span></div>
+                <div class="ti"><span>Ibovespa no período</span><span class="val">24%</span></div>
+                <div class="ti"><span>Tendência (12m)</span><span class="val">estável</span></div>
+                <span class="trilha-src">sem rompimento relevante de suporte</span>
+              </div>
+            </div>
+            <p class="proj">Projeção de retorno médio, já líquida de IR estimado (15%, swing trade): <b>curto ~7,6% a.a. · médio ~9,3% a.a. · longo ~10,2% a.a.</b> Estimativa, não garantia.</p>
+          </details>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="state2-wrap">
+  <p class="label" style="margin-bottom:10px;">Estado secundário — aviso de concentração (antes de liberar os detalhes)</p>
+  <div class="modal-frame">
+    <div class="browser modal-bg" style="border:none;box-shadow:none;height:100%;border-radius:20px;">
+      <div class="chrome"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><div class="addr">app.painelunico.com.br/painel</div></div>
+      <div class="screen" style="height:100%;">
+        <div class="sidebar"><div class="side-logo">P</div><div class="side-icon active">◆</div></div>
+        <div class="main"><div class="appbar"><div class="hi">Olá, <span>Marta</span></div></div><div class="card reco-card"><div class="ticker">TAEE11<span>TAESA</span></div></div></div>
+      </div>
+    </div>
+    <div class="modal-overlay">
+      <div class="modal-card">
+        <h3>Antes de ver os detalhes completos</h3>
+        <p>Quanto do total que você pretende investir em ações você pensa em colocar em TAEE11?</p>
+        <div class="slider-row">
+          <div class="slider-track"><div class="slider-fill"></div><div class="slider-thumb"></div></div>
+          <div class="slider-val">35%</div>
+        </div>
+        <div class="warn-box">Atenção: 35% do seu total em uma única ação é concentração de risco. Uma ação avulsa não é, por definição, um investimento conservador — mesmo compatível com o seu perfil, ela concentra o risco em uma única empresa.</div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost">Ajustar percentual</button>
+          <button class="btn btn-primary">Confirmar e ver detalhes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

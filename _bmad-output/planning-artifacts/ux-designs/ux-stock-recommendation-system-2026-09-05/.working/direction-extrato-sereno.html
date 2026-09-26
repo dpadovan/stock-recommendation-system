@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Direção 1 — Extrato Sereno</title>
+<style>
+/*
+  DIREÇÃO 1 — "EXTRATO SERENO"
+  Interpretação mais literal do brief "extrato bancário limpo, mas mais quente":
+  papel-crème, hairlines em vez de cards, tipografia serifada só nos números
+  grandes e no nome da ação, densidade baixíssima, aviso de status como texto
+  discreto de caderneta (não um badge chamativo). O calor entra pela cor do
+  papel e pelo terracota do acento — não por decoração.
+
+  PALETA (hex documentados):
+  --paper        #FAF6EF   fundo geral, papel crème
+  --paper-line   #E7DDCE   hairlines / divisores estilo linha de extrato
+  --ink          #2B2620   texto principal, quase-preto quente
+  --ink-muted    #7A7061   texto secundário / rótulos
+  --accent       #B5602F   terracota — único acento de marca (links, CTA, foco)
+  --accent-soft  #F1E4D6   fundo suave do acento (chips, hover)
+  --status-good  #4B7A5C   verde musgo — "favorável"
+  --status-warn  #B08A2E   âmbar — "atenção"
+  --status-bad   #A2483B   terracota-vermelho — "alerta"
+  --white        #FFFFFF   cartão de destaque único (recomendação)
+  --overlay      rgba(43,38,32,.55)  véu do modal de concentração
+*/
+:root{
+  --paper:#FAF6EF; --paper-line:#E7DDCE; --ink:#2B2620; --ink-muted:#7A7061;
+  --accent:#B5602F; --accent-soft:#F1E4D6; --status-good:#4B7A5C;
+  --status-warn:#B08A2E; --status-bad:#A2483B; --white:#FFFFFF;
+  --overlay:rgba(43,38,32,.55);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; padding:40px 20px; background:#EFE7DA;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:var(--ink);
+  display:flex; flex-direction:column; align-items:center; gap:28px;
+}
+.label{
+  font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+  color:#8A8072; font-weight:600;
+}
+.rationale{
+  max-width:760px; font-size:13.5px; line-height:1.6; color:#5b5344;
+  text-align:center; margin:0 0 4px;
+}
+
+/* browser frame */
+.browser{
+  width:100%; max-width:920px; background:var(--white);
+  border-radius:10px; box-shadow:0 20px 60px -20px rgba(43,38,32,.35), 0 2px 8px rgba(43,38,32,.08);
+  overflow:hidden; border:1px solid #E2D8C8;
+}
+.chrome{
+  display:flex; align-items:center; gap:16px; padding:10px 16px;
+  background:#F3ECE1; border-bottom:1px solid var(--paper-line);
+}
+.dots{display:flex; gap:6px;}
+.dots span{width:10px;height:10px;border-radius:50%;display:inline-block;}
+.dots .r{background:#E0A79B;} .dots .y{background:#E5C98F;} .dots .g{background:#A9C4AC;}
+.addr{
+  flex:1; background:var(--white); border:1px solid var(--paper-line); border-radius:6px;
+  font-size:11.5px; color:var(--ink-muted); padding:5px 10px; font-family:ui-monospace,Menlo,monospace;
+}
+
+.screen{ background:var(--paper); padding:0; }
+
+/* app header */
+.appbar{
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding:26px 44px 18px; border-bottom:1px solid var(--paper-line);
+}
+.wordmark{ font-family:Georgia,'Times New Roman',serif; font-size:19px; letter-spacing:.01em; }
+.wordmark b{ color:var(--accent); font-weight:700; }
+.greet{ font-size:13px; color:var(--ink-muted); }
+
+.content{ padding:8px 44px 40px; }
+
+/* section 1: perda por inercia */
+.sec{ padding:30px 0; border-bottom:1px solid var(--paper-line); }
+.sec-title{
+  font-size:11.5px; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--ink-muted); margin:0 0 14px; font-weight:600;
+}
+.ledger-row{
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding:10px 0; border-bottom:1px dashed var(--paper-line);
+  font-family:Georgia,'Times New Roman',serif;
+}
+.ledger-row:last-of-type{ border-bottom:none; }
+.ledger-label{ font-size:14.5px; color:var(--ink); }
+.ledger-sub{ font-family:-apple-system,sans-serif; font-size:11.5px; color:var(--ink-muted); display:block; margin-top:2px; }
+.ledger-value{ font-size:17px; font-variant-numeric:tabular-nums; }
+.ledger-value.diff{ color:var(--accent); font-weight:700; }
+.disclaimer-inline{
+  margin-top:16px; font-size:12.5px; line-height:1.65; color:var(--ink-muted);
+  border-left:2px solid var(--paper-line); padding-left:14px;
+}
+
+/* section 2: recomendacao */
+.reco-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:24px; margin-bottom:14px;}
+.reco-name{ font-family:Georgia,'Times New Roman',serif; font-size:24px; }
+.reco-name span{ display:block; font-family:-apple-system,sans-serif; font-size:12px; color:var(--ink-muted); font-weight:600; letter-spacing:.04em; margin-top:3px;}
+.status-tag{ display:flex; align-items:center; gap:8px; }
+.gauge{ width:64px; height:5px; border-radius:3px; background:linear-gradient(to right,var(--status-bad),var(--status-warn),var(--status-good)); position:relative; }
+.gauge i{ position:absolute; top:-3px; left:80%; width:11px; height:11px; border-radius:50%; background:var(--status-good); border:2px solid var(--white); box-shadow:0 0 0 1px var(--status-good); }
+.status-word{ font-size:12.5px; font-weight:700; color:var(--status-good); text-transform:uppercase; letter-spacing:.05em; }
+.reco-body p{ font-size:14.5px; line-height:1.7; margin:0 0 12px; }
+.reco-why{ font-size:13.5px; line-height:1.7; color:#4a453b; background:var(--accent-soft); border-radius:6px; padding:14px 16px; }
+.non-imperative{ margin-top:14px; font-size:12.5px; line-height:1.6; color:var(--ink-muted); font-style:italic; }
+
+/* confirmed allocation chip */
+.confirm-chip{
+  display:inline-flex; align-items:center; gap:8px; margin-top:16px;
+  background:var(--white); border:1px solid var(--paper-line); border-radius:20px;
+  padding:6px 14px; font-size:12px; color:var(--ink-muted);
+}
+.confirm-chip b{ color:var(--ink); }
+.confirm-chip .dot{width:7px;height:7px;border-radius:50%;background:var(--status-good);}
+
+/* trilha (details/summary, no JS) */
+details{ margin-top:6px; }
+summary{
+  cursor:pointer; font-size:13px; font-weight:600; color:var(--accent);
+  list-style:none; display:flex; align-items:center; gap:6px;
+}
+summary::-webkit-details-marker{ display:none; }
+summary:before{ content:'▸'; font-size:11px; }
+details[open] summary:before{ content:'▾'; }
+.trilha-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:18px; }
+.trilha-col h4{ font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-muted); margin:0 0 10px; }
+.trilha-item{ padding:9px 0; border-bottom:1px dashed var(--paper-line); font-size:13px; }
+.trilha-item .k{ color:var(--ink); }
+.trilha-item .v{ float:right; font-variant-numeric:tabular-nums; color:var(--ink); font-weight:600; }
+.trilha-src{ font-size:11px; color:var(--ink-muted); display:block; margin-top:2px; }
+
+.proj{ margin-top:20px; font-size:12.5px; color:var(--ink-muted); line-height:1.7; }
+.proj b{ color:var(--ink); }
+
+/* secondary state: modal */
+.state2-wrap{ width:100%; max-width:920px; text-align:center; }
+.modal-frame{
+  position:relative; width:100%; height:520px; border-radius:10px; overflow:hidden;
+  border:1px solid #E2D8C8; box-shadow:0 20px 60px -20px rgba(43,38,32,.35);
+}
+.modal-bg{ filter:blur(2px) brightness(.96); height:100%; }
+.modal-overlay{
+  position:absolute; inset:0; background:var(--overlay); display:flex;
+  align-items:center; justify-content:center; padding:20px;
+}
+.modal-card{
+  background:var(--paper); border-radius:10px; max-width:440px; width:100%;
+  padding:30px 30px 26px; box-shadow:0 20px 50px rgba(0,0,0,.3);
+}
+.modal-card h3{ font-family:Georgia,serif; font-size:19px; margin:0 0 6px; }
+.modal-card p{ font-size:13px; line-height:1.65; color:#4a453b; margin:0 0 16px; }
+.slider-row{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+.slider-track{ flex:1; height:6px; background:var(--paper-line); border-radius:3px; position:relative; }
+.slider-fill{ position:absolute; left:0; top:0; height:100%; width:35%; background:var(--status-bad); border-radius:3px; }
+.slider-thumb{ position:absolute; left:35%; top:50%; transform:translate(-50%,-50%); width:18px; height:18px; border-radius:50%; background:var(--white); border:2px solid var(--status-bad); }
+.slider-val{ font-size:15px; font-weight:700; font-variant-numeric:tabular-nums; min-width:44px; text-align:right; }
+.warn-box{
+  background:#F7E9E4; border:1px solid #E3C3B6; border-radius:6px; padding:12px 14px;
+  font-size:12.5px; line-height:1.6; color:var(--status-bad); margin-bottom:18px;
+}
+.modal-actions{ display:flex; gap:10px; }
+.btn{ flex:1; border:none; border-radius:6px; padding:11px 14px; font-size:13px; font-weight:600; cursor:default; }
+.btn-primary{ background:var(--accent); color:var(--white); }
+.btn-ghost{ background:transparent; border:1px solid var(--paper-line); color:var(--ink-muted); }
+</style>
+</head>
+<body>
+
+<div class="label">Direção 1 de 4 — Extrato Sereno</div>
+<p class="rationale">Leitura mais literal do brief: papel crème, hairlines de extrato bancário no lugar de cards, tipografia serifada reservada aos números e ao nome da ação. Densidade baixa, silêncio visual, um único acento terracota. O calor vem do papel e do texto — nunca de um badge chamativo.</p>
+
+<div class="browser">
+  <div class="chrome">
+    <div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+    <div class="addr">app.painelunico.com.br/painel</div>
+  </div>
+  <div class="screen">
+    <div class="appbar">
+      <div class="wordmark"><b>Painel</b> Único</div>
+      <div class="greet">Olá, Marta</div>
+    </div>
+
+    <div class="content">
+
+      <!-- 1. Perda por inercia -->
+      <div class="sec">
+        <p class="sec-title">Quanto seu dinheiro deixou de render</p>
+        <div class="ledger-row">
+          <div>
+            <div class="ledger-label">Na poupança, nos últimos 12 meses</div>
+            <span class="ledger-sub">sobre R$ 18.000,00 parados</span>
+          </div>
+          <div class="ledger-value">R$ 1.080,00</div>
+        </div>
+        <div class="ledger-row">
+          <div>
+            <div class="ledger-label">Se estivesse rendendo o CDI, no mesmo período</div>
+            <span class="ledger-sub">taxa de referência da renda fixa</span>
+          </div>
+          <div class="ledger-value diff">R$ 2.070,00</div>
+        </div>
+        <p class="disclaimer-inline">Isso é uma diferença de R$ 990,00 que ficou parada junto com o dinheiro. Os valores acima usam o histórico de poupança e CDI dos últimos 12 meses só para ilustrar o custo de deixar o dinheiro parado — rentabilidade passada não garante rentabilidade futura, e isso vale para qualquer comparação que você veja aqui.</p>
+      </div>
+
+      <!-- 2. Recomendacao -->
+      <div class="sec">
+        <p class="sec-title">Uma ação para o seu perfil</p>
+        <div class="reco-top">
+          <div class="reco-name">TAESA <span>TAEE11 · Transmissão de Energia</span></div>
+          <div class="status-tag">
+            <div class="gauge"><i></i></div>
+            <span class="status-word">Favorável</span>
+          </div>
+        </div>
+        <div class="reco-body">
+          <p class="reco-why">Os dados indicam TAEE11 como compatível com seu perfil conservador e horizonte de longo prazo: a empresa opera contratos regulados de longo prazo, mantém histórico constante de pagamento de dividendos e apresentou, nos últimos 5 anos, oscilação de preço bem abaixo da média da bolsa.</p>
+          <p class="non-imperative">Isso não é uma recomendação de compra. Os dados indicam uma tendência favorável para o seu perfil — quando e quanto investir continua sendo uma decisão sua. E vale lembrar: mesmo compatível com o perfil conservador, uma ação avulsa concentra o risco em uma única empresa, o que nenhum perfil elimina por completo.</p>
+        </div>
+        <div class="confirm-chip"><span class="dot"></span> Percentual confirmado: <b>12% do seu total em renda variável</b></div>
+      </div>
+
+      <!-- 4. Trilha de transparencia -->
+      <div class="sec" style="border-bottom:none;">
+        <details>
+          <summary>Ver a trilha de transparência completa</summary>
+          <div class="trilha-grid">
+            <div class="trilha-col">
+              <h4>Indicadores fundamentalistas</h4>
+              <div class="trilha-item"><span class="v">9,1% a.a.</span><span class="k">Dividend yield médio (5 anos)</span><span class="trilha-src">Fonte: dados públicos B3 · ref. ago/2026</span></div>
+              <div class="trilha-item"><span class="v">2,3x</span><span class="k">Dívida líquida / EBITDA</span><span class="trilha-src">Fonte: dados públicos B3 · ref. ago/2026</span></div>
+              <div class="trilha-item"><span class="v">18,0%</span><span class="k">ROE médio (5 anos)</span><span class="trilha-src">Fonte: dados públicos B3 · ref. ago/2026</span></div>
+            </div>
+            <div class="trilha-col">
+              <h4>Padrões técnicos</h4>
+              <div class="trilha-item"><span class="v">15%</span><span class="k">Volatilidade histórica (12 meses)</span><span class="trilha-src">Ibovespa no período: 24% · ref. ago/2026</span></div>
+              <div class="trilha-item"><span class="v">estável</span><span class="k">Tendência de preço (12 meses)</span><span class="trilha-src">sem rompimento relevante de suporte</span></div>
+            </div>
+          </div>
+          <p class="proj">Projeção de retorno médio, já líquida de IR estimado (alíquota de swing trade, 15%): <b>curto prazo ~7,6% a.a. · médio prazo ~9,3% a.a. · longo prazo ~10,2% a.a.</b> Estimativa, não garantia.</p>
+        </details>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="state2-wrap">
+  <p class="label" style="margin-bottom:10px;">Estado secundário — aviso de concentração (antes de liberar os detalhes)</p>
+  <div class="modal-frame">
+    <div class="browser modal-bg" style="border:none;box-shadow:none;height:100%;">
+      <div class="chrome"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><div class="addr">app.painelunico.com.br/painel</div></div>
+      <div class="screen" style="height:100%;">
+        <div class="appbar"><div class="wordmark"><b>Painel</b> Único</div><div class="greet">Olá, Marta</div></div>
+        <div class="content"><div class="sec"><p class="sec-title">Uma ação para o seu perfil</p><div class="reco-name">TAESA <span>TAEE11</span></div></div></div>
+      </div>
+    </div>
+    <div class="modal-overlay">
+      <div class="modal-card">
+        <h3>Antes de ver os detalhes completos</h3>
+        <p>Quanto do total que você pretende investir em ações você pensa em colocar em TAEE11?</p>
+        <div class="slider-row">
+          <div class="slider-track"><div class="slider-fill"></div><div class="slider-thumb"></div></div>
+          <div class="slider-val">35%</div>
+        </div>
+        <div class="warn-box">Atenção: 35% do seu total em uma única ação é concentração de risco. Uma ação avulsa não é, por definição, um investimento conservador — mesmo sendo compatível com o seu perfil, ela concentra o risco em uma única empresa.</div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost">Ajustar percentual</button>
+          <button class="btn btn-primary">Confirmar e ver detalhes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

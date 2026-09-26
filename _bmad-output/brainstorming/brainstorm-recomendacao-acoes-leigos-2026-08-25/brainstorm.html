@@ -1,0 +1,1317 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Investir Sem Vergonha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ============================================================
+   Este documento comete a um único mundo visual: uma jornada de
+   cor que vai de uma "noite ansiosa" (abertura) através de zonas
+   claras e procedurais (as quatro técnicas) até uma "noite calma"
+   (síntese final). Essa progressão é o conteúdo do documento, não
+   um acessório — por isso as cores abaixo são fixas, sem variação
+   por tema claro/escuro do visualizador; o fundo e as cores de
+   texto são sempre declarados explicitamente em cada zona.
+   ============================================================ */
+
+:root{
+  --paper:        #F3F0E7;
+  --paper-deep:   #E9E3D2;
+  --paper-line:   #D9D2BE;
+  --ink:          #241F2E;
+  --ink-soft:     #2E2536;
+  --ink-dim:      #6B6455;
+
+  --night:        #221C2C;
+  --night-soft:   #2B2336;
+  --night-line:   rgba(243,240,231,0.16);
+  --on-night:     #F3F0E7;
+  --on-night-dim: #C7BFD6;
+
+  --calm-night:      #102A24;
+  --calm-night-soft: #16352D;
+  --calm-line:       rgba(226,244,238,0.16);
+
+  --brick:        #A8452E;
+  --brick-soft:   #C56B4C;
+  --amber:        #B4822F;
+  --amber-soft:   #D6A959;
+  --jade:         #1F6E5C;
+  --jade-bright:  #3EAE92;
+  --regulatory:   #5B4E68;
+
+  --shadow: 0 18px 40px -22px rgba(36,31,46,0.35);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:auto; }
+@media (prefers-reduced-motion: no-preference){
+  html{ scroll-behavior:smooth; }
+}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Public Sans", ui-sans-serif, system-ui, sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block;}
+h1,h2,h3{
+  font-family:"Fraunces", Georgia, "Times New Roman", serif;
+  font-weight:600;
+  margin:0;
+  text-wrap:balance;
+}
+p{ margin:0; }
+a{ color:inherit; }
+::selection{ background:var(--jade); color:var(--paper); }
+
+.mono{
+  font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.eyebrow{
+  font-family:"IBM Plex Mono", ui-monospace, monospace;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-size:.72rem;
+  font-weight:500;
+}
+.section-title{
+  font-size:clamp(1.7rem, 3.2vw, 2.5rem);
+  line-height:1.15;
+  margin-top:.5rem;
+  max-width:18ch;
+}
+.lede{
+  font-size:1.05rem;
+  max-width:60ch;
+  margin-top:1.1rem;
+}
+.on-dark .lede{ color:var(--on-night-dim); }
+
+/* ---------- layout shells ---------- */
+.zone{
+  position:relative;
+  padding:5.5rem clamp(1.25rem,5vw,4rem);
+}
+.zone-inner{
+  max-width:74rem;
+  margin:0 auto;
+}
+.zone.on-night{ background:var(--night); color:var(--on-night); }
+.zone.on-calm-night{ background:var(--calm-night); color:var(--on-night); }
+.zone.on-paper{ background:var(--paper); color:var(--ink); }
+.zone.on-paper-deep{ background:var(--paper-deep); color:var(--ink); }
+
+.rule{
+  height:1px;
+  background:var(--paper-line);
+  border:0;
+  margin:3rem 0;
+}
+.on-night .rule, .on-calm-night .rule{ background:var(--night-line); }
+
+/* ---------- attribution tags ---------- */
+.tag-attr{
+  display:inline-flex;
+  align-items:center;
+  gap:.35em;
+  font-family:"IBM Plex Mono", monospace;
+  font-size:.66rem;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  padding:.22em .6em;
+  border-radius:2px;
+  border:1px solid currentColor;
+  opacity:.82;
+  white-space:nowrap;
+}
+.tag-attr.participante{ color:var(--brick-soft); }
+.tag-attr.facilitacao{ color:var(--amber-soft); }
+.tag-attr.decisao{ color:var(--jade-bright); }
+.tag-attr.insight{ color:var(--regulatory); }
+.on-paper .tag-attr.participante{ color:var(--brick); }
+.on-paper .tag-attr.facilitacao{ color:var(--amber); }
+.on-paper .tag-attr.decisao{ color:var(--jade); }
+.on-paper .tag-attr.insight{ color:var(--regulatory); }
+
+/* ---------- reveal-on-scroll ---------- */
+.reveal{ opacity:1; transform:none; }
+@media (prefers-reduced-motion: no-preference){
+  .reveal{
+    opacity:0;
+    transform:translateY(22px);
+    transition:opacity .85s cubic-bezier(.2,.7,.2,1), transform .85s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal.in-view{ opacity:1; transform:none; }
+}
+
+/* ---------- dot nav ---------- */
+.dotnav{
+  position:fixed;
+  right:1.1rem;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:40;
+  display:flex;
+  flex-direction:column;
+  gap:.65rem;
+}
+.dotnav a{
+  width:9px;height:9px;border-radius:50%;
+  background:rgba(107,100,85,0.35);
+  display:block;
+  position:relative;
+  transition:background .3s ease, transform .3s ease;
+}
+.dotnav a::after{
+  content:attr(data-label);
+  position:absolute;
+  right:130%;
+  top:50%;
+  transform:translateY(-50%);
+  font-family:"IBM Plex Mono", monospace;
+  font-size:.62rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  background:var(--ink);
+  color:var(--paper);
+  padding:.3em .6em;
+  border-radius:2px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .2s ease;
+}
+.dotnav a:hover::after,.dotnav a:focus-visible::after{ opacity:1; }
+.dotnav a.active{ background:var(--brick); transform:scale(1.35); }
+.dotnav a:focus-visible{ outline:2px solid var(--jade); outline-offset:3px; }
+@media (max-width: 720px){ .dotnav{ display:none; } }
+
+a:focus-visible, button:focus-visible{ outline:2px solid var(--jade-bright); outline-offset:3px; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  min-height:88vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  background:
+    radial-gradient(ellipse 70% 60% at 18% 8%, rgba(197,107,76,0.16), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 90%, rgba(91,78,104,0.22), transparent 60%),
+    var(--night);
+}
+.hero-kicker{
+  color:var(--brick-soft);
+  margin-bottom:1.4rem;
+}
+.hero h1{
+  color:var(--on-night);
+  font-size:clamp(2.6rem, 7vw, 5rem);
+  letter-spacing:-.01em;
+  max-width:16ch;
+}
+.hero h1 em{
+  font-style:italic;
+  color:var(--brick-soft);
+}
+.hero .lede{
+  color:var(--on-night-dim);
+  font-size:1.15rem;
+  margin-top:1.6rem;
+  max-width:44ch;
+}
+.dossier{
+  margin-top:3.2rem;
+  border-top:1px solid var(--night-line);
+  padding-top:1.6rem;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:1.6rem 2.2rem;
+  max-width:56rem;
+}
+.dossier dt{
+  font-family:"IBM Plex Mono", monospace;
+  text-transform:uppercase;
+  font-size:.66rem;
+  letter-spacing:.1em;
+  color:var(--on-night-dim);
+  margin-bottom:.4rem;
+}
+.dossier dd{
+  margin:0;
+  font-size:.95rem;
+  color:var(--on-night);
+}
+.dossier dd.status{
+  display:inline-flex;
+  align-items:center;
+  gap:.5em;
+}
+.dossier dd.status::before{
+  content:"";
+  width:8px;height:8px;border-radius:50%;
+  background:var(--jade-bright);
+  box-shadow:0 0 0 3px rgba(62,174,146,0.22);
+}
+
+/* ============================================================
+   TÉCNICA 01 — MAPA DE EMPATIA
+   ============================================================ */
+.empathy-wrap{
+  display:grid;
+  grid-template-columns:1.05fr 1fr;
+  gap:3.5rem;
+  align-items:start;
+  margin-top:3rem;
+}
+@media (max-width:880px){ .empathy-wrap{ grid-template-columns:1fr; } }
+
+.empathy-grid{
+  display:grid;
+  grid-template-columns:1fr 1.3fr 1fr;
+  grid-template-rows:auto auto auto;
+  grid-template-areas:
+    ".    says   ."
+    "does center feels"
+    ".    hyp    .";
+  gap:.9rem;
+  font-size:.95rem;
+}
+.em-cell{
+  border:1px solid var(--night-line);
+  border-radius:3px;
+  padding:1.1rem 1.2rem;
+  background:rgba(243,240,231,0.03);
+}
+.em-cell h3{
+  font-family:"IBM Plex Mono", monospace;
+  text-transform:uppercase;
+  font-size:.68rem;
+  letter-spacing:.1em;
+  font-weight:500;
+  color:var(--brick-soft);
+  margin-bottom:.6rem;
+}
+.em-cell p{ color:var(--on-night); font-size:.93rem; }
+.em-says{ grid-area:says; }
+.em-does{ grid-area:does; }
+.em-feels{ grid-area:feels; }
+.em-hyp{ grid-area:hyp; border-style:dashed; }
+.em-hyp h3{ color:var(--regulatory); }
+.em-center{
+  grid-area:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+.em-center .avatar{
+  width:100%;
+  aspect-ratio:1;
+  border-radius:50%;
+  border:1px solid var(--night-line);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:.3rem;
+  background:radial-gradient(circle at 32% 28%, rgba(165,69,46,0.25), transparent 60%), rgba(243,240,231,0.04);
+  padding:1rem;
+}
+.em-center .avatar strong{
+  font-family:"Fraunces", serif;
+  font-style:italic;
+  font-size:1.3rem;
+  font-weight:500;
+}
+.em-center .avatar span{
+  font-family:"IBM Plex Mono", monospace;
+  font-size:.66rem;
+  letter-spacing:.06em;
+  color:var(--on-night-dim);
+  text-transform:uppercase;
+  max-width:14ch;
+}
+
+.insight-card{
+  margin-top:1.6rem;
+  border-left:3px solid var(--brick-soft);
+  padding:1.2rem 1.4rem;
+  background:rgba(165,69,46,0.08);
+  border-radius:0 3px 3px 0;
+}
+.insight-card .eyebrow{ color:var(--brick-soft); margin-bottom:.5rem; }
+.insight-card p{ color:var(--on-night); font-size:1rem; }
+
+.empathy-side p{ color:var(--on-night-dim); }
+.empathy-side .tag-attr{ margin-top:1.2rem; }
+
+/* ============================================================
+   TÉCNICA 02 — ROLE PLAYING
+   ============================================================ */
+.persona-list{
+  margin-top:3rem;
+  display:flex;
+  flex-direction:column;
+  gap:1.4rem;
+}
+.persona-card{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  gap:1.6rem;
+  padding:1.6rem 1.8rem;
+  background:var(--paper);
+  border:1px solid var(--paper-line);
+  border-radius:4px;
+  box-shadow:var(--shadow);
+}
+@media (max-width:760px){ .persona-card{ grid-template-columns:1fr; } }
+.persona-id{
+  display:flex;
+  flex-direction:column;
+  gap:.5rem;
+}
+.persona-dot{
+  width:10px;height:10px;border-radius:50%;
+}
+.persona-card.trader .persona-dot{ background:var(--brick); }
+.persona-card.contador .persona-dot{ background:var(--amber); }
+.persona-card.cvm .persona-dot{ background:var(--regulatory); }
+.persona-id .role{
+  font-family:"IBM Plex Mono", monospace;
+  text-transform:uppercase;
+  font-size:.7rem;
+  letter-spacing:.08em;
+  color:var(--ink-dim);
+}
+.persona-id .who{
+  font-family:"Fraunces", serif;
+  font-weight:600;
+  font-size:1.15rem;
+}
+.persona-body blockquote{
+  margin:0 0 .9rem 0;
+  font-family:"Fraunces", serif;
+  font-style:italic;
+  font-size:1.08rem;
+  line-height:1.5;
+}
+.persona-body .demand{
+  font-size:.92rem;
+  color:var(--ink-dim);
+  border-top:1px dashed var(--paper-line);
+  padding-top:.8rem;
+  margin-top:.6rem;
+}
+.persona-body .demand strong{ color:var(--ink); font-weight:600; }
+
+.tax-ledger{
+  margin-top:.9rem;
+  border:1px solid var(--paper-line);
+  border-radius:3px;
+  overflow:hidden;
+}
+.tax-ledger .row{
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  padding:.55rem .9rem;
+  font-family:"IBM Plex Mono", monospace;
+  font-size:.78rem;
+}
+.tax-ledger .row:nth-child(odd){ background:var(--paper-deep); }
+.tax-ledger .row span:first-child{ color:var(--ink-dim); }
+.tax-ledger .row span:last-child{ font-weight:600; text-align:right; }
+
+/* ============================================================
+   TÉCNICA 03 — JOB TO BE DONE
+   ============================================================ */
+.jtbd-wrap{
+  margin-top:3rem;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2rem;
+  align-items:start;
+}
+@media (max-width:820px){ .jtbd-wrap{ grid-template-columns:1fr; } }
+
+.memo{
+  background:var(--paper);
+  border:1px solid var(--paper-line);
+  border-radius:2px;
+  padding:1.8rem 1.9rem;
+  position:relative;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.memo-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  font-family:"IBM Plex Mono", monospace;
+  font-size:.68rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:var(--ink-dim);
+  border-bottom:1px solid var(--paper-line);
+  padding-bottom:.8rem;
+  margin-bottom:1rem;
+}
+.memo dl{ margin:0 0 1rem 0; font-size:.92rem; }
+.memo dl div{ display:flex; gap:.5em; padding:.15rem 0; }
+.memo dt{ font-weight:600; min-width:6.2em; }
+.memo p.body-line{ font-size:.95rem; margin-top:.4rem; }
+.stamp{
+  position:absolute;
+  top:1.4rem;
+  right:-2.6rem;
+  transform:rotate(9deg);
+  border:3px solid var(--brick);
+  color:var(--brick);
+  font-family:"IBM Plex Mono", monospace;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:.85rem;
+  padding:.35em 2.6em;
+  opacity:.85;
+}
+.memo.derived{ border-color:var(--amber-soft); background:var(--paper-deep); }
+.memo.derived .memo-head{ color:var(--amber); }
+.memo.derived .stamp{ border-color:var(--amber); color:var(--amber); font-size:.72rem; padding:.3em 1.6em; right:-1.9rem; top:1.6rem; }
+
+/* ============================================================
+   TÉCNICA 04 — ANÁLISE MORFOLÓGICA
+   ============================================================ */
+.matrix{
+  margin-top:3rem;
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+.dim-row{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  gap:1.4rem;
+  align-items:center;
+  padding:1rem 0;
+  border-bottom:1px solid var(--paper-line);
+}
+@media (max-width:700px){ .dim-row{ grid-template-columns:1fr; gap:.6rem; } }
+.dim-label{
+  font-family:"IBM Plex Mono", monospace;
+  font-size:.78rem;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--ink-dim);
+}
+.dim-label small{
+  display:block;
+  font-size:.66rem;
+  letter-spacing:.02em;
+  text-transform:none;
+  margin-top:.3rem;
+  opacity:.8;
+}
+.dim-options{ display:flex; flex-wrap:wrap; gap:.6rem; }
+.chip{
+  font-size:.85rem;
+  padding:.45em 1em;
+  border-radius:999px;
+  border:1px solid var(--paper-line);
+  background:var(--paper);
+  color:var(--ink-dim);
+}
+.chip.selected{
+  background:var(--jade);
+  border-color:var(--jade);
+  color:var(--paper);
+  font-weight:600;
+  box-shadow:0 4px 14px -6px rgba(31,110,92,0.55);
+}
+.combo-card{
+  margin-top:1.8rem;
+  padding:1.6rem 1.8rem;
+  background:var(--ink);
+  color:var(--paper);
+  border-radius:4px;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:1rem 1.4rem;
+}
+.combo-card .eyebrow{ color:var(--jade-bright); width:100%; margin-bottom:.2rem;}
+.combo-card .combo-chip{
+  font-family:"IBM Plex Mono", monospace;
+  font-size:.85rem;
+  padding:.4em .9em;
+  border:1px solid rgba(243,240,231,0.3);
+  border-radius:999px;
+}
+.combo-card .plus{ opacity:.5; }
+
+/* ============================================================
+   CONVERGÊNCIA
+   ============================================================ */
+.scatter{
+  margin-top:2.6rem;
+  display:flex;
+  flex-wrap:wrap;
+  gap:.7rem 1rem;
+  max-width:52rem;
+}
+.scatter span{
+  font-family:"IBM Plex Mono", monospace;
+  font-size:.72rem;
+  padding:.4em .85em;
+  background:var(--paper);
+  border:1px solid var(--paper-line);
+  border-radius:2px;
+  color:var(--ink-dim);
+}
+.scatter span:nth-child(3n+1){ transform:rotate(-1.5deg); }
+.scatter span:nth-child(3n+2){ transform:rotate(1.2deg); }
+.scatter span:nth-child(3n){ transform:rotate(-0.5deg); }
+
+.converge-arrow{
+  display:flex;
+  align-items:center;
+  gap:1rem;
+  margin:2.2rem 0;
+  color:var(--ink-dim);
+  font-family:"IBM Plex Mono", monospace;
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+}
+.converge-arrow::before,.converge-arrow::after{
+  content:"";
+  height:1px;
+  flex:1;
+  background:linear-gradient(90deg, transparent, var(--paper-line));
+}
+.converge-arrow::after{ background:linear-gradient(90deg, var(--paper-line), transparent); }
+
+.cluster-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.1rem;
+}
+@media (max-width:820px){ .cluster-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:560px){ .cluster-grid{ grid-template-columns:1fr; } }
+.cluster-card{
+  background:var(--paper);
+  border:1px solid var(--paper-line);
+  border-radius:4px;
+  padding:1.3rem 1.3rem;
+}
+.cluster-card .num{
+  font-family:"IBM Plex Mono", monospace;
+  font-size:.72rem;
+  color:var(--jade);
+  margin-bottom:.5rem;
+}
+.cluster-card h3{
+  font-size:1rem;
+  font-weight:600;
+  font-family:"Public Sans", sans-serif;
+  margin-bottom:.5rem;
+}
+.cluster-card p{ font-size:.86rem; color:var(--ink-dim); }
+
+.moscow{
+  margin-top:3.2rem;
+  display:flex;
+  flex-direction:column;
+  gap:.7rem;
+}
+.mos-row{
+  display:grid;
+  grid-template-columns:150px 1fr;
+  gap:1.2rem;
+  align-items:start;
+  padding:1rem 1.2rem;
+  border-radius:3px;
+}
+@media (max-width:680px){ .mos-row{ grid-template-columns:1fr; gap:.5rem; } }
+.mos-row .label{
+  font-family:"Fraunces", serif;
+  font-weight:600;
+  font-size:1rem;
+}
+.mos-row .label small{
+  display:block;
+  font-family:"IBM Plex Mono", monospace;
+  font-weight:400;
+  font-size:.66rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-top:.3rem;
+}
+.mos-row ul{ margin:0; padding:0; list-style:none; display:flex; flex-wrap:wrap; gap:.5rem; }
+.mos-row li{ font-size:.86rem; padding:.35em .8em; border-radius:999px; }
+
+.mos-must{ background:var(--jade); color:var(--paper); }
+.mos-must li{ background:rgba(243,240,231,0.16); }
+.mos-should{ background:var(--paper-deep); border:1px solid var(--jade); }
+.mos-should li{ background:rgba(31,110,92,0.1); color:var(--ink); }
+.mos-could{ background:transparent; border:1px dashed var(--paper-line); }
+.mos-could li{ background:var(--paper); border:1px solid var(--paper-line); color:var(--ink-dim); }
+.mos-wont{ opacity:.6; }
+.mos-wont li{ text-decoration:line-through; background:var(--paper-deep); color:var(--ink-dim); }
+
+/* ============================================================
+   SÍNTESE FINAL
+   ============================================================ */
+.threads{
+  margin-top:3rem;
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  position:relative;
+}
+.thread-item{
+  display:grid;
+  grid-template-columns:60px 1fr;
+  gap:1.4rem;
+  padding-bottom:2.2rem;
+  position:relative;
+}
+.thread-item:last-child{ padding-bottom:0; }
+.thread-num{
+  font-family:"Fraunces", serif;
+  font-size:1.4rem;
+  font-weight:600;
+  color:var(--jade-bright);
+  position:relative;
+}
+.thread-item:not(:last-child)::before{
+  content:"";
+  position:absolute;
+  left:29px;
+  top:2.4rem;
+  bottom:0;
+  width:1px;
+  background:var(--calm-line);
+}
+.thread-body h3{
+  font-size:1.15rem;
+  color:var(--on-night);
+  margin-bottom:.5rem;
+}
+.thread-body p{ color:var(--on-night-dim); font-size:.95rem; max-width:56ch; }
+
+.dashboard-payoff{
+  margin-top:4rem;
+  border:1px solid var(--calm-line);
+  border-radius:8px;
+  padding:2rem 2.2rem;
+  background:linear-gradient(160deg, rgba(62,174,146,0.09), rgba(16,42,36,0.4));
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:2rem;
+  align-items:center;
+}
+@media (max-width:760px){ .dashboard-payoff{ grid-template-columns:1fr; } }
+.dashboard-payoff .dp-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:1.2rem;
+}
+.dashboard-payoff .dp-title{
+  font-family:"IBM Plex Mono", monospace;
+  text-transform:uppercase;
+  font-size:.72rem;
+  letter-spacing:.1em;
+  color:var(--on-night-dim);
+}
+.dp-live{
+  display:inline-flex;
+  align-items:center;
+  gap:.5em;
+  font-family:"IBM Plex Mono", monospace;
+  font-size:.68rem;
+  color:var(--jade-bright);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.dp-live::before{
+  content:"";
+  width:7px;height:7px;border-radius:50%;
+  background:var(--jade-bright);
+}
+@media (prefers-reduced-motion: no-preference){
+  .dp-live::before{ animation:pulse 2.4s ease-in-out infinite; }
+}
+@keyframes pulse{
+  0%,100%{ box-shadow:0 0 0 0 rgba(62,174,146,0.45); }
+  50%{ box-shadow:0 0 0 6px rgba(62,174,146,0); }
+}
+.dp-chips{ display:flex; flex-wrap:wrap; gap:.6rem; margin-bottom:1.4rem; }
+.dp-chips span{
+  font-family:"IBM Plex Mono", monospace;
+  font-size:.74rem;
+  padding:.4em .85em;
+  border:1px solid var(--calm-line);
+  border-radius:999px;
+  color:var(--on-night);
+}
+.dp-message{
+  font-family:"Fraunces", serif;
+  font-style:italic;
+  font-size:1.15rem;
+  color:var(--on-night);
+  max-width:34ch;
+}
+.dp-message small{
+  display:block;
+  font-family:"Public Sans", sans-serif;
+  font-style:normal;
+  font-size:.82rem;
+  color:var(--on-night-dim);
+  margin-top:.6rem;
+}
+.gauge{
+  width:150px;height:150px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:conic-gradient(var(--jade-bright) 0deg 46deg, rgba(226,244,238,0.12) 46deg 360deg);
+  position:relative;
+}
+.gauge::before{
+  content:"";
+  position:absolute;
+  inset:14px;
+  border-radius:50%;
+  background:var(--calm-night);
+}
+.gauge-label{
+  position:relative;
+  text-align:center;
+  z-index:1;
+}
+.gauge-label strong{
+  display:block;
+  font-family:"Fraunces", serif;
+  font-size:1.5rem;
+  color:var(--jade-bright);
+}
+.gauge-label span{
+  font-family:"IBM Plex Mono", monospace;
+  font-size:.6rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:var(--on-night-dim);
+}
+
+.closing-line{
+  margin-top:3.4rem;
+  font-family:"Fraunces", serif;
+  font-weight:500;
+  font-size:clamp(1.3rem,2.4vw,1.7rem);
+  max-width:34ch;
+  color:var(--on-night);
+}
+.closing-line strong{ color:var(--jade-bright); font-weight:600; }
+.closing-sub{
+  margin-top:1rem;
+  color:var(--on-night-dim);
+  font-size:.95rem;
+  max-width:52ch;
+}
+
+/* ---------- footer ---------- */
+.colophon{
+  padding:3rem clamp(1.25rem,5vw,4rem) 3.5rem;
+  background:var(--calm-night);
+  color:var(--on-night-dim);
+  font-family:"IBM Plex Mono", monospace;
+  font-size:.72rem;
+  letter-spacing:.03em;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:1rem;
+  border-top:1px solid var(--calm-line);
+}
+
+</style>
+</head>
+<body>
+
+<nav class="dotnav" aria-label="Navegação da sessão">
+  <a href="#hero" data-label="Abertura" class="active"></a>
+  <a href="#empatia" data-label="Mapa de empatia"></a>
+  <a href="#role-playing" data-label="Role playing"></a>
+  <a href="#jtbd" data-label="Job to be done"></a>
+  <a href="#morfologica" data-label="Análise morfológica"></a>
+  <a href="#convergencia" data-label="Convergência"></a>
+  <a href="#sintese" data-label="Síntese final"></a>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="zone on-night hero" id="hero">
+  <div class="zone-inner">
+    <p class="eyebrow hero-kicker">Sessão de brainstorming · Método BMad · 25–26 ago 2026</p>
+    <h1>Investir sem <em>vergonha</em></h1>
+    <p class="lede">Uma sessão sobre como recomendar ações para quem nunca aprendeu a mexer com a bolsa —
+      sem fingir que dá pra virar especialista da noite pro dia, e sem tratar o medo de errar como
+      um detalhe menor do problema.</p>
+
+    <dl class="dossier">
+      <div>
+        <dt>Objetivo da sessão</dt>
+        <dd>Um sistema que combina análise técnica e fundamentalista para recomendar ações de curto,
+          médio e longo prazo — com explicações simples, projeção de retorno, cálculo de lucro
+          líquido depois do imposto e um painel visual central.</dd>
+      </div>
+      <div>
+        <dt>Modo de trabalho</dt>
+        <dd>Parceria — participante e facilitação construindo junto</dd>
+      </div>
+      <div>
+        <dt>Técnicas aplicadas</dt>
+        <dd>Mapa de empatia → Role playing → Job to be done → Análise morfológica</dd>
+      </div>
+      <div>
+        <dt>Status</dt>
+        <dd class="status">Sessão concluída</dd>
+      </div>
+    </dl>
+  </div>
+</header>
+
+<!-- ================= TÉCNICA 01 · EMPATIA ================= -->
+<section class="zone on-night" id="empatia">
+  <div class="zone-inner">
+    <div class="reveal">
+      <p class="eyebrow" style="color:var(--brick-soft)">Técnica 01 — Mapa de empatia</p>
+      <h2 class="section-title">Quem é essa pessoa que a gente quer ajudar</h2>
+    </div>
+
+    <div class="empathy-wrap">
+      <div class="empathy-grid reveal">
+        <div class="em-cell em-says">
+          <h3>Diz</h3>
+          <p>“Investir é arriscado e complicado demais.”</p>
+        </div>
+        <div class="em-cell em-does">
+          <h3>Faz</h3>
+          <p>Evita completamente o assunto. Deixa tudo parado na poupança — a inércia como
+            estratégia de defesa.</p>
+        </div>
+        <div class="em-center">
+          <div class="avatar">
+            <strong>ela</strong>
+            <span>cogitando investir pela primeira vez</span>
+          </div>
+        </div>
+        <div class="em-cell em-feels">
+          <h3>Sente</h3>
+          <p>Ansiedade e culpa por não fazer nada com o dinheiro parado.</p>
+        </div>
+        <div class="em-cell em-hyp">
+          <h3>Hipótese da facilitação</h3>
+          <p>Por trás do “é complicado” tem medo de julgamento e vergonha — não só medo de
+            perder dinheiro.</p>
+        </div>
+      </div>
+
+      <div class="empathy-side reveal">
+        <p>O mapa parece simples, mas vira o ponto de partida da sessão inteira: se o “é
+          complicado” for principalmente um disfarce pra vergonha, resolver isso com mais
+          informação técnica não resolve nada. É preciso resolver o sentimento primeiro.</p>
+        <span class="tag-attr participante">Contribuição da participante</span><br>
+        <span class="tag-attr facilitacao" style="margin-top:.6rem;display:inline-flex;">Hipótese da facilitação</span>
+      </div>
+    </div>
+
+    <div class="insight-card reveal">
+      <p class="eyebrow">Insight-chave</p>
+      <p>O produto compete com a inércia e a segurança psicológica da poupança — não só com a
+        falta de informação. A dor central é <strong>ansiedade + culpa</strong>, e o valor real do
+        produto pode estar em <em>absorver a responsabilidade da decisão</em>: dar uma permissão
+        simples e justificada para agir.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TÉCNICA 02 · ROLE PLAYING ================= -->
+<section class="zone on-paper" id="role-playing">
+  <div class="zone-inner">
+    <div class="reveal">
+      <p class="eyebrow" style="color:var(--brick)">Técnica 02 — Role playing</p>
+      <h2 class="section-title">Três vozes que não deixariam barato</h2>
+      <p class="lede">Pra testar a ideia contra quem faria as perguntas difíceis, a sessão colocou
+        três personagens pra questionar o sistema antes que o mundo real questionasse.</p>
+    </div>
+
+    <div class="persona-list">
+      <article class="persona-card trader reveal">
+        <div class="persona-id">
+          <span class="persona-dot"></span>
+          <span class="role mono">Voz 01</span>
+          <span class="who">O trader cético</span>
+        </div>
+        <div class="persona-body">
+          <blockquote>“Isso aqui me deixaria inquieto — eu sentiria a necessidade de explicar
+            e alertar o iniciante sobre os riscos.”</blockquote>
+          <p class="demand"><strong>Exige:</strong> transparência total nos dados usados na análise.
+            Nada de caixa-preta.</p>
+        </div>
+      </article>
+
+      <article class="persona-card contador reveal">
+        <div class="persona-id">
+          <span class="persona-dot"></span>
+          <span class="role mono">Voz 02</span>
+          <span class="who">O contador / a Receita</span>
+        </div>
+        <div class="persona-body">
+          <blockquote>“Precisa calcular certo o imposto sobre o ganho de capital — não é só
+            preço de venda menos preço de compra.”</blockquote>
+          <div class="tax-ledger mono">
+            <div class="row"><span>Isenção mensal (vendas à vista)</span><span>até R$ 20.000/mês</span></div>
+            <div class="row"><span>Alíquota — day trade</span><span>20%</span></div>
+            <div class="row"><span>Alíquota — swing trade</span><span>15%</span></div>
+            <div class="row"><span>Recolhimento</span><span>DARF mensal</span></div>
+            <div class="row"><span>Prejuízo</span><span>compensável entre operações</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="persona-card cvm reveal">
+        <div class="persona-id">
+          <span class="persona-dot"></span>
+          <span class="role mono">Voz 03</span>
+          <span class="who">A CVM</span>
+        </div>
+        <div class="persona-body">
+          <blockquote>“Precisa ficar claro que isto é educacional e informativo — não é
+            consultoria de investimentos regulamentada.”</blockquote>
+          <p class="demand">Essa frase vai voltar a aparecer na síntese final — ela resolve
+            mais de um problema ao mesmo tempo.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TÉCNICA 03 · JOB TO BE DONE ================= -->
+<section class="zone on-paper-deep" id="jtbd">
+  <div class="zone-inner">
+    <div class="reveal">
+      <p class="eyebrow" style="color:var(--amber)">Técnica 03 — Job to be done</p>
+      <h2 class="section-title">Quem está sendo demitido</h2>
+      <p class="lede">Job to be done pergunta o que o produto substitui na vida real de alguém.
+        A resposta aqui tinha nome e sobrenome.</p>
+    </div>
+
+    <div class="jtbd-wrap">
+      <div class="memo reveal">
+        <div class="stamp">substituído</div>
+        <div class="memo-head"><span>Aviso de desligamento</span><span>Job demitido</span></div>
+        <dl>
+          <div><dt>Cargo</dt><dd>Conselheiro financeiro informal</dd></div>
+          <div><dt>Ocupante</dt><dd>O cunhado “que entende de bolsa”</dd></div>
+        </dl>
+        <p class="body-line">O sistema não compete com corretoras ou apps de investimento — ele
+          compete com o palpite de alguém da família que parece saber do assunto. É esse job que
+          precisa ser feito melhor.</p>
+        <span class="tag-attr participante" style="margin-top:1rem;display:inline-flex;">Contribuição da participante</span>
+      </div>
+
+      <div class="memo derived reveal">
+        <div class="stamp">ideia derivada</div>
+        <div class="memo-head"><span>Proposta da facilitação</span><span>Feature</span></div>
+        <p class="body-line" style="margin-top:0;">Um modo <strong>“explica pro cunhado”</strong>:
+          um relatório simples e compartilhável que ela pode mostrar pra família e amigos, para
+          justificar a decisão com dados — ganhando prova social contra o palpite informal.</p>
+        <span class="tag-attr facilitacao" style="margin-top:1rem;display:inline-flex;">Hipótese da facilitação</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TÉCNICA 04 · MORFOLÓGICA ================= -->
+<section class="zone on-paper" id="morfologica">
+  <div class="zone-inner">
+    <div class="reveal">
+      <p class="eyebrow" style="color:var(--jade)">Técnica 04 — Análise morfológica</p>
+      <h2 class="section-title">Painel de controle: montando a combinação</h2>
+      <p class="lede">Cada dimensão do produto vira um eixo com opções. A pergunta não é qual
+        opção é “a certa” — é qual combinação faz sentido pra primeira versão.</p>
+    </div>
+
+    <div class="matrix reveal">
+      <div class="dim-row">
+        <div class="dim-label">Perfil de risco</div>
+        <div class="dim-options">
+          <span class="chip selected">Conservador</span>
+          <span class="chip">Moderado</span>
+          <span class="chip">Arrojado</span>
+        </div>
+      </div>
+      <div class="dim-row">
+        <div class="dim-label">Nível de interação<small>proposto pela facilitação</small></div>
+        <div class="dim-options">
+          <span class="chip">Passivo — alerta pontual</span>
+          <span class="chip">Ativo — chat conversacional</span>
+          <span class="chip selected">Monitoramento contínuo</span>
+        </div>
+      </div>
+      <div class="dim-row">
+        <div class="dim-label">Horizonte<small>vindo do objetivo da sessão</small></div>
+        <div class="dim-options">
+          <span class="chip">Curto prazo</span>
+          <span class="chip">Médio prazo</span>
+          <span class="chip selected">Longo prazo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="combo-card reveal">
+      <span class="eyebrow">Combo vencedor · decisão da participante</span>
+      <span class="combo-chip">Conservador</span>
+      <span class="plus">+</span>
+      <span class="combo-chip">Longo prazo</span>
+      <span class="plus">+</span>
+      <span class="combo-chip">Monitoramento contínuo</span>
+      <span class="plus">+</span>
+      <span class="combo-chip">Painel visual interativo e intuitivo</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONVERGÊNCIA ================= -->
+<section class="zone on-paper-deep" id="convergencia">
+  <div class="zone-inner">
+    <div class="reveal">
+      <p class="eyebrow" style="color:var(--jade)">Convergência</p>
+      <h2 class="section-title">As ideias soltas viram 6 grupos</h2>
+      <p class="lede">Tudo que apareceu nas quatro técnicas foi jogado numa mesa só e reagrupado
+        por afinidade.</p>
+    </div>
+
+    <div class="scatter reveal mono" aria-hidden="true">
+      <span>medo de julgamento</span>
+      <span>poupança parada</span>
+      <span>cunhado conselheiro</span>
+      <span>transparência total</span>
+      <span>IR sobre ganho de capital</span>
+      <span>day trade × swing trade</span>
+      <span>disclaimer CVM</span>
+      <span>perfil de risco</span>
+      <span>monitoramento contínuo</span>
+      <span>painel semáforo/termômetro</span>
+      <span>explica pro cunhado</span>
+      <span>chat conversacional</span>
+    </div>
+
+    <div class="converge-arrow reveal">Affinity clustering</div>
+
+    <div class="cluster-grid reveal">
+      <div class="cluster-card">
+        <p class="num mono">Cluster 01</p>
+        <h3>Dor emocional / posicionamento central</h3>
+        <p>A ansiedade e a culpa da poupança parada. O ponto de partida de tudo.</p>
+      </div>
+      <div class="cluster-card">
+        <p class="num mono">Cluster 02</p>
+        <h3>Confiança e transparência</h3>
+        <p>Dados abertos, trilha auditável — sem caixa-preta pro cético de plantão.</p>
+      </div>
+      <div class="cluster-card">
+        <p class="num mono">Cluster 03</p>
+        <h3>Enquadramento legal / regulatório</h3>
+        <p>Educacional, não consultoria. A CVM aprovaria — e ela também.</p>
+      </div>
+      <div class="cluster-card">
+        <p class="num mono">Cluster 04</p>
+        <h3>Cálculo fiscal preciso</h3>
+        <p>Isenção, alíquotas, DARF, prejuízo compensado. Lucro líquido de verdade.</p>
+      </div>
+      <div class="cluster-card">
+        <p class="num mono">Cluster 05</p>
+        <h3>Personalização (risco / horizonte)</h3>
+        <p>Conservador ou arrojado, curto ou longo prazo — o sistema se adapta.</p>
+      </div>
+      <div class="cluster-card">
+        <p class="num mono">Cluster 06</p>
+        <h3>Experiência do painel</h3>
+        <p>Onde tudo isso vira calma: semáforo, termômetro, silêncio.</p>
+      </div>
+    </div>
+
+    <div class="converge-arrow reveal" style="margin-top:3rem;">MoSCoW</div>
+
+    <div class="moscow reveal">
+      <div class="mos-row mos-must">
+        <div class="label">Must<small>tem que ter</small></div>
+        <ul>
+          <li>Recomendação técnica + fundamentalista, com explicação</li>
+          <li>Trilha de transparência dos dados usados</li>
+          <li>Disclaimer educacional — não é consultoria</li>
+          <li>Cálculo correto de IR sobre ganho de capital</li>
+          <li>Personalização por perfil de risco e horizonte</li>
+          <li>Painel visual central</li>
+        </ul>
+      </div>
+      <div class="mos-row mos-should">
+        <div class="label">Should<small>devia ter</small></div>
+        <ul>
+          <li>Monitoramento contínuo com alertas</li>
+          <li>Linguagem visual tipo semáforo/termômetro</li>
+        </ul>
+      </div>
+      <div class="mos-row mos-could">
+        <div class="label">Could<small>seria bom ter</small></div>
+        <ul>
+          <li>Modo “explica pro cunhado”</li>
+          <li>Chat conversacional ativo</li>
+          <li>Formato em áudio</li>
+        </ul>
+      </div>
+      <div class="mos-row mos-wont">
+        <div class="label">Won't<small>não por agora</small></div>
+        <ul>
+          <li>Suporte a day trade</li>
+          <li>Execução de ordens / integração com corretora</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SÍNTESE FINAL ================= -->
+<section class="zone on-calm-night" id="sintese">
+  <div class="zone-inner">
+    <div class="reveal">
+      <p class="eyebrow" style="color:var(--jade-bright)">Síntese final</p>
+      <h2 class="section-title" style="max-width:22ch;">Quatro fios que amarram tudo</h2>
+    </div>
+
+    <div class="threads reveal">
+      <div class="thread-item">
+        <div class="thread-num mono">01</div>
+        <div class="thread-body">
+          <h3>O mesmo recurso, três apelidos</h3>
+          <p>O modo “explica pro cunhado”, a trilha de transparência dos dados e o próprio ato de
+            “demitir o cunhado” não são três ideias — são <strong>um único relatório rastreável e
+            compartilhável</strong>, visto por três ângulos diferentes.</p>
+        </div>
+      </div>
+      <div class="thread-item">
+        <div class="thread-num mono">02</div>
+        <div class="thread-body">
+          <h3>Uma frase, dois medos</h3>
+          <p>O disclaimer educacional da CVM — “isto não é consultoria regulamentada” — resolve a
+            exigência legal e o medo de julgamento do usuário ao mesmo tempo. Mesma frase, dois
+            problemas.</p>
+        </div>
+      </div>
+      <div class="thread-item">
+        <div class="thread-num mono">03</div>
+        <div class="thread-body">
+          <h3>Cortar para simplificar</h3>
+          <p>Tirar o day trade do escopo (Won't) desarma a complexidade fiscal — alíquotas
+            diferentes, DARF mensal, compensação de prejuízos — e torna o cálculo de IR (Must)
+            tratável já na v1.</p>
+        </div>
+      </div>
+      <div class="thread-item">
+        <div class="thread-num mono">04</div>
+        <div class="thread-body">
+          <h3>O verdadeiro produto</h3>
+          <p>O motor de análise técnica + fundamentalista já é commodity. A inovação real é a
+            camada que reduz a ansiedade: painel calmo, linguagem de semáforo/termômetro,
+            monitoramento contínuo e silencioso.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-payoff reveal">
+      <div>
+        <div class="dp-head">
+          <span class="dp-title mono">Seu painel</span>
+          <span class="dp-live">ao vivo</span>
+        </div>
+        <div class="dp-chips">
+          <span>Perfil: conservador</span>
+          <span>Horizonte: longo prazo</span>
+          <span>Modo: monitoramento contínuo</span>
+        </div>
+        <p class="dp-message">“Nenhuma ação necessária hoje.
+          <small>A gente avisa se isso mudar. É só isso, por enquanto.</small>
+        </p>
+      </div>
+      <div class="gauge">
+        <div class="gauge-label">
+          <strong>Baixo</strong>
+          <span>Nível de atenção<br>necessária hoje</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="closing-line reveal">A direção escolhida: <strong>conservador + longo prazo +
+      monitoramento contínuo + painel visual interativo.</strong></p>
+    <p class="closing-sub reveal">Não porque é a combinação mais ambiciosa — porque é a que
+      deixa alguém dormir tranquilo sem precisar entender de bolsa.</p>
+  </div>
+</section>
+
+<footer class="colophon">
+  <span>Sessão de brainstorming · Sistema de recomendação de ações para investidores leigos</span>
+  <span>Método BMad · Mapa de empatia · Role playing · Job to be done · Análise morfológica</span>
+  <span>25–26 ago 2026 · Sessão concluída</span>
+</footer>
+
+<script>
+(function(){
+  var sections = document.querySelectorAll('.zone[id]');
+  var dots = document.querySelectorAll('.dotnav a');
+  var reveals = document.querySelectorAll('.reveal');
+
+  if('IntersectionObserver' in window){
+    var revealObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    reveals.forEach(function(el){ revealObserver.observe(el); });
+
+    var navObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          var id = entry.target.getAttribute('id');
+          dots.forEach(function(d){
+            d.classList.toggle('active', d.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { threshold: 0.5 });
+    sections.forEach(function(s){ navObserver.observe(s); });
+  } else {
+    reveals.forEach(function(el){ el.classList.add('in-view'); });
+  }
+})();
+</script>
+
+</body>
+</html>

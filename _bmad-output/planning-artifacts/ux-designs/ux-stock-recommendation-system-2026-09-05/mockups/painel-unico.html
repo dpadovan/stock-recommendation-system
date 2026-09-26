@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Direção Mesclada — Recibo Caloroso + Termômetro</title>
+<style>
+/*
+  DIREÇÃO MESCLADA — "RECIBO CALOROSO" + TERMÔMETRO LITERAL
+  Base: Recibo Caloroso — cartões arredondados, sombras macias, números em
+  monoespaçada (cupom fiscal), densidade média, paleta creme + terracota +
+  musgo. Único elemento trazido da Direção 3 (Termômetro Editorial): a peça
+  central de status deixa de ser o "semáforo" de pontinhos e vira um
+  termômetro vertical literal (tubo + bolbo) — mas redesenhado no registro
+  mais quente e arredondado do Recibo (tubo em cápsula, bolbo com sombra
+  macia, selo de status como chip carimbado) em vez do registro editorial
+  de jornal (tubo fino com contorno preto duro).
+
+  PALETA (hex documentados) — idêntica à Recibo Caloroso, sem introduzir
+  paleta nova; único acréscimo é um tom-tinta do musgo só para o degradê
+  do termômetro:
+  --bg          #FFF8F0   fundo do app, creme quente
+  --card        #FFFFFF   fundo dos cartões
+  --border      #F0DFC8   bordas suaves dos cartões
+  --ink         #3A2E22   texto principal
+  --ink-muted   #8A7A68   texto secundário
+  --terracotta  #E0703B   acento primário (CTA, destaque, marca)
+  --terracotta-soft #FCE7D8  fundo suave do acento
+  --moss        #5B8266   verde — status "favorável" (usado no termômetro)
+  --moss-light  #7FAF8C   tom claro do musgo — só o topo do degradê do termômetro
+  --moss-soft   #E7F0E9   fundo suave do verde (cápsula do termômetro)
+  --amber       #D9A441   status "atenção"
+  --red         #C1503F   status "alerta" / concentração
+  --overlay     rgba(58,46,34,.6)  véu do modal
+*/
+:root{
+  --bg:#FFF8F0; --card:#FFFFFF; --border:#F0DFC8; --ink:#3A2E22; --ink-muted:#8A7A68;
+  --terracotta:#E0703B; --terracotta-soft:#FCE7D8; --moss:#5B8266; --moss-light:#7FAF8C; --moss-soft:#E7F0E9;
+  --amber:#D9A441; --red:#C1503F; --overlay:rgba(58,46,34,.6);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; padding:40px 20px; background:#F3E7D8;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  color:var(--ink); display:flex; flex-direction:column; align-items:center; gap:26px;
+}
+.label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#96805F;font-weight:700;}
+.rationale{max-width:760px;font-size:13.5px;line-height:1.6;color:#6b5843;text-align:center;margin:0;}
+
+.browser{
+  width:100%; max-width:960px; background:var(--card); border-radius:18px;
+  box-shadow:0 24px 60px -18px rgba(58,46,34,.35); overflow:hidden; border:1px solid var(--border);
+}
+.chrome{ display:flex; align-items:center; gap:16px; padding:12px 18px; background:#FCEEDD; border-bottom:1px solid var(--border); }
+.dots{display:flex;gap:6px;} .dots span{width:11px;height:11px;border-radius:50%;}
+.dots .r{background:#F0A98F;} .dots .y{background:#F3CB84;} .dots .g{background:#9BC7A6;}
+.addr{ flex:1; background:var(--card); border:1px solid var(--border); border-radius:8px; font-size:11.5px; color:var(--ink-muted); padding:6px 12px; font-family:ui-monospace,Menlo,monospace;}
+
+.screen{ background:var(--bg); }
+.appbar{ display:flex; justify-content:space-between; align-items:center; padding:20px 32px; }
+.wordmark{ font-size:19px; font-weight:800; }
+.wordmark span{ color:var(--terracotta); }
+.greet{ font-size:13px; color:var(--ink-muted); background:var(--card); border:1px solid var(--border); padding:6px 12px; border-radius:20px; }
+
+.content{ padding:4px 32px 32px; display:flex; flex-direction:column; gap:18px; }
+
+.card{ background:var(--card); border:1px solid var(--border); border-radius:16px; padding:22px 24px; box-shadow:0 8px 20px -14px rgba(58,46,34,.4); }
+.card-title{ font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-muted); font-weight:700; margin:0 0 14px; }
+
+/* 1. perda por inercia */
+.receipt-row{ display:flex; justify-content:space-between; align-items:center; padding:11px 0; border-bottom:1px dashed var(--border); }
+.receipt-row:last-of-type{ border-bottom:none; }
+.rr-label{ font-size:14px; font-weight:600; }
+.rr-sub{ display:block; font-size:11.5px; color:var(--ink-muted); font-weight:400; margin-top:2px; }
+.rr-value{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:16.5px; font-weight:700; font-variant-numeric:tabular-nums; }
+.rr-value.diff{ color:var(--terracotta); }
+.disclaimer-pill{ margin-top:14px; background:var(--terracotta-soft); border-radius:10px; padding:12px 14px; font-size:12.5px; line-height:1.6; color:#8a4a26; }
+
+/* 2. recomendacao — texto + termômetro lado a lado */
+.reco-grid{ display:grid; grid-template-columns:1fr auto; gap:26px; align-items:start; }
+.ticker{ font-size:22px; font-weight:800; margin-bottom:12px; }
+.ticker span{ display:block; font-size:12px; color:var(--ink-muted); font-weight:600; margin-top:3px; }
+.reco-why{ font-size:14px; line-height:1.7; background:#FBF3E7; border-radius:12px; padding:16px 18px; margin:0 0 12px; }
+.non-imperative{ font-size:12.5px; line-height:1.6; color:var(--ink-muted); }
+.confirm-chip{ display:inline-flex; align-items:center; gap:8px; margin-top:14px; background:var(--moss-soft); border-radius:20px; padding:7px 14px; font-size:12px; font-weight:600; color:#3f5f4c; }
+.confirm-chip .dot{ width:7px;height:7px;border-radius:50%;background:var(--moss); }
+
+/* termômetro — versão "recibo": cápsula arredondada, sombra macia, selo carimbado */
+.therm-wrap{ display:flex; flex-direction:column; align-items:center; gap:10px; background:var(--moss-soft); border-radius:20px; padding:20px 20px 16px; min-width:118px; }
+.therm-label{ font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-muted); font-weight:700; }
+.therm-tube{ position:relative; width:28px; height:104px; background:var(--card); border:3px solid var(--moss); border-radius:14px; overflow:hidden; box-shadow:inset 0 2px 5px rgba(58,46,34,.1); }
+.therm-fill{ position:absolute; bottom:0; left:0; right:0; height:78%; background:linear-gradient(to top,var(--moss),var(--moss-light)); border-radius:0 0 10px 10px; }
+.therm-tick{ position:absolute; left:-8px; width:6px; height:2px; border-radius:1px; background:var(--border); }
+.therm-bulb{ width:38px; height:38px; border-radius:50%; background:var(--moss); border:3px solid var(--moss); margin-top:-9px; box-shadow:0 6px 14px -4px rgba(91,130,102,.55); }
+.therm-status{ background:var(--card); border-radius:20px; padding:5px 13px; font-size:12px; font-weight:800; color:var(--moss); text-transform:uppercase; letter-spacing:.03em; box-shadow:0 4px 10px -6px rgba(58,46,34,.3); }
+
+/* trilha */
+details{ margin-top:2px; }
+summary{ cursor:pointer; font-size:13.5px; font-weight:700; color:var(--terracotta); list-style:none; display:flex; align-items:center; gap:6px; }
+summary::-webkit-details-marker{ display:none; }
+summary:before{ content:'＋'; font-size:13px; }
+details[open] summary:before{ content:'－'; }
+.trilha-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px; }
+.trilha-box{ background:#FBF3E7; border-radius:12px; padding:14px 16px; }
+.trilha-box h4{ margin:0 0 10px; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-muted); }
+.ti{ display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px dashed var(--border); font-size:12.5px; }
+.ti:last-child{ border-bottom:none; }
+.ti .val{ font-family:ui-monospace,Menlo,monospace; font-weight:700; }
+.ti-src{ display:block; font-size:10.5px; color:var(--ink-muted); margin-top:1px; }
+.proj{ margin-top:14px; font-size:12px; color:var(--ink-muted); line-height:1.6; }
+
+/* secondary state */
+.state2-wrap{ width:100%; max-width:960px; text-align:center; }
+.modal-frame{ position:relative; width:100%; height:540px; border-radius:18px; overflow:hidden; border:1px solid var(--border); box-shadow:0 24px 60px -18px rgba(58,46,34,.35); }
+.modal-bg{ filter:blur(2.5px) brightness(.95); height:100%; }
+.modal-overlay{ position:absolute; inset:0; background:var(--overlay); display:flex; align-items:center; justify-content:center; padding:20px; }
+.modal-card{ background:var(--bg); border-radius:20px; max-width:440px; width:100%; padding:26px 26px 24px; box-shadow:0 20px 50px rgba(0,0,0,.35); }
+.modal-card h3{ font-size:19px; font-weight:800; margin:0 0 8px; }
+.modal-card p{ font-size:13px; line-height:1.6; color:#5b4a38; margin:0 0 16px; }
+.slider-row{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+.slider-track{ flex:1; height:8px; background:var(--border); border-radius:4px; position:relative; }
+.slider-fill{ position:absolute; left:0; top:0; height:100%; width:35%; background:var(--red); border-radius:4px; }
+.slider-thumb{ position:absolute; left:35%; top:50%; transform:translate(-50%,-50%); width:20px; height:20px; border-radius:50%; background:var(--card); border:3px solid var(--red); }
+.slider-val{ font-family:ui-monospace,Menlo,monospace; font-size:16px; font-weight:800; min-width:44px; text-align:right; }
+.warn-box{ background:#FBE4DD; border-radius:12px; padding:13px 15px; font-size:12.5px; line-height:1.6; color:var(--red); margin-bottom:18px; font-weight:600; }
+.modal-actions{ display:flex; gap:10px; }
+.btn{ flex:1; border:none; border-radius:12px; padding:12px 14px; font-size:13.5px; font-weight:700; cursor:default; }
+.btn-primary{ background:var(--terracotta); color:#fff; }
+.btn-ghost{ background:var(--card); border:1px solid var(--border); color:var(--ink-muted); }
+</style>
+</head>
+<body>
+
+<div class="label">Direção Mesclada — Recibo Caloroso + Termômetro</div>
+<p class="rationale">Base é o recibo entregue na mão: cartões arredondados, sombras macias, números em monoespaçada como cupom fiscal, paleta terracota + musgo. O único elemento importado da Direção 3 é o termômetro vertical literal como peça central do status — mas redesenhado no registro quente e arredondado do recibo (cápsula, bolbo com sombra macia, selo carimbado) em vez do tubo de contorno duro do jornal econômico.</p>
+
+<div class="browser">
+  <div class="chrome"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><div class="addr">app.painelunico.com.br/painel</div></div>
+  <div class="screen">
+    <div class="appbar">
+      <div class="wordmark">Painel<span>Único</span></div>
+      <div class="greet">Olá, Marta</div>
+    </div>
+    <div class="content">
+
+      <!-- 1 -->
+      <div class="card">
+        <p class="card-title">Quanto seu dinheiro deixou de render</p>
+        <div class="receipt-row">
+          <div class="rr-label">Poupança (12 meses)<span class="rr-sub">sobre R$ 18.000,00 parados</span></div>
+          <div class="rr-value">R$ 1.080,00</div>
+        </div>
+        <div class="receipt-row">
+          <div class="rr-label">Se fosse CDI (mesmo período)<span class="rr-sub">taxa de referência da renda fixa</span></div>
+          <div class="rr-value diff">R$ 2.070,00</div>
+        </div>
+        <div class="disclaimer-pill">Diferença de R$ 990,00 parada junto com o dinheiro. Usamos o histórico de poupança e CDI dos últimos 12 meses só para ilustrar o custo da inércia — rentabilidade passada não garante rentabilidade futura.</div>
+      </div>
+
+      <!-- 2 -->
+      <div class="card">
+        <p class="card-title">Uma ação para o seu perfil</p>
+        <div class="reco-grid">
+          <div>
+            <div class="ticker">TAEE11<span>TAESA · Transmissão de Energia</span></div>
+            <p class="reco-why">Os dados indicam TAEE11 como compatível com o seu perfil conservador e horizonte de longo prazo: contratos regulados de longo prazo, histórico constante de dividendos e oscilação de preço bem abaixo da média da bolsa nos últimos 5 anos.</p>
+            <p class="non-imperative">Isso não é uma recomendação de compra — os dados indicam uma tendência favorável para o seu perfil, mas a decisão é sempre sua. Mesmo compatível com o perfil conservador, uma ação avulsa concentra o risco em uma única empresa.</p>
+            <div class="confirm-chip"><span class="dot"></span> Percentual confirmado: 12% do total em renda variável</div>
+          </div>
+          <div class="therm-wrap">
+            <span class="therm-label">Status</span>
+            <div class="therm-tube">
+              <div class="therm-fill"></div>
+              <div class="therm-tick" style="bottom:18%"></div>
+              <div class="therm-tick" style="bottom:38%"></div>
+              <div class="therm-tick" style="bottom:58%"></div>
+              <div class="therm-tick" style="bottom:78%"></div>
+            </div>
+            <div class="therm-bulb"></div>
+            <div class="therm-status">Favorável</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="card">
+        <details>
+          <summary>Ver a trilha de transparência completa</summary>
+          <div class="trilha-grid">
+            <div class="trilha-box">
+              <h4>Fundamentalistas</h4>
+              <div class="ti"><span>Dividend yield médio (5a)</span><span class="val">9,1% a.a.</span></div>
+              <div class="ti"><span>Dívida líquida / EBITDA</span><span class="val">2,3x</span></div>
+              <div class="ti"><span>ROE médio (5a)</span><span class="val">18,0%</span></div>
+              <span class="ti-src">Fonte: dados públicos B3 · ref. ago/2026</span>
+            </div>
+            <div class="trilha-box">
+              <h4>Padrões técnicos</h4>
+              <div class="ti"><span>Volatilidade (12m)</span><span class="val">15%</span></div>
+              <div class="ti"><span>Ibovespa no período</span><span class="val">24%</span></div>
+              <div class="ti"><span>Tendência (12m)</span><span class="val">estável</span></div>
+              <span class="ti-src">sem rompimento relevante de suporte</span>
+            </div>
+          </div>
+          <p class="proj">Projeção de retorno médio, já líquida de IR estimado (15%, swing trade): <b>curto ~7,6% a.a. · médio ~9,3% a.a. · longo ~10,2% a.a.</b> Estimativa, não garantia.</p>
+        </details>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="state2-wrap">
+  <p class="label" style="margin-bottom:10px;">Estado secundário — aviso de concentração (antes de liberar os detalhes)</p>
+  <div class="modal-frame">
+    <div class="browser modal-bg" style="border:none;box-shadow:none;height:100%;border-radius:18px;">
+      <div class="chrome"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><div class="addr">app.painelunico.com.br/painel</div></div>
+      <div class="screen" style="height:100%;">
+        <div class="appbar"><div class="wordmark">Painel<span>Único</span></div><div class="greet">Olá, Marta</div></div>
+        <div class="content"><div class="card"><p class="card-title">Uma ação para o seu perfil</p><div class="ticker">TAEE11<span>TAESA</span></div></div></div>
+      </div>
+    </div>
+    <div class="modal-overlay">
+      <div class="modal-card">
+        <h3>Antes de ver os detalhes completos</h3>
+        <p>Quanto do total que você pretende investir em ações você pensa em colocar em TAEE11?</p>
+        <div class="slider-row">
+          <div class="slider-track"><div class="slider-fill"></div><div class="slider-thumb"></div></div>
+          <div class="slider-val">35%</div>
+        </div>
+        <div class="warn-box">Atenção: 35% do seu total em uma única ação é concentração de risco. Uma ação avulsa não é, por definição, um investimento conservador — mesmo compatível com o seu perfil, ela concentra o risco em uma única empresa.</div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost">Ajustar percentual</button>
+          <button class="btn btn-primary">Confirmar e ver detalhes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
